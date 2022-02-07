@@ -1,0 +1,84 @@
+﻿@model BookStore.Common.Cart
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    int total = 0;
+}
+
+@section header{
+    Chi tiết hóa đơn
+}
+
+<table class="table cm-force-table-bordered bg-white col-md-8 col-lg-6 mx-auto">
+    <thead class="thead-dark">
+        <tr>
+            <th>Khách hàng</th>
+            <th>Ngày tạo</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@ViewBag.CustomerName</td>
+            <td>@Model.CreatedDate.Value.ToString("dd-MM-yyyy HH-m-s")</td>
+            <!--<td>-->@*@(Model.Status==true?"Chưa thanh toán":"Đã thanh toán")*@<!--</td>-->
+            <td>
+                @{
+                    if (Model.Status == true)
+                    {
+                        <span>Chưa thanh toán </span>
+                        <i class="fas fa-exclamation-circle text-danger"></i>
+                    }
+                    else
+                    {
+                        <span>Đã thanh toán </span>
+                        <i class="fas fa-check-circle text-success"></i>
+                    }
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4 class="text-center text-uppercase font-weight-bold mt-4">Chi tiết hóa đơn</h4>
+
+<table class="table cm-force-table-bordered bg-white">
+    <thead class="thead-dark">
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Đơn giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int temp = 0;
+            foreach (var item in ViewBag.CartDetail)
+            {
+                temp += (Convert.ToInt32(item.Product.Price) * item.Quantity);
+                total += temp;
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Price.ToString("N0")</td>
+                    <td>@item.Quantity</td>
+                    <td>@(temp.ToString("N0"))</td>
+                </tr>
+            }
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3">Tổng tiền</th>
+            <th>@total.ToString("N0")</th>
+        </tr>
+    </tfoot>
+</table>
+
+<p>
+    <div class="form-actions no-color">
+        <a href="/Admin/Carts/DeleteConfirmed/@Model.ID" class="btn btn-default">Xóa</a> |
+        @Html.ActionLink("Quay lại trang danh sách hóa đơn", "Index")
+    </div>
+</p>

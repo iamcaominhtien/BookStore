@@ -1,0 +1,143 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Assets/Admin/js/Chart.js"></script>
+</head>
+<body>
+    <div class="d-flex">
+        <p class="d-flex flex-column">
+            <span class="text-bold text-lg">@(ViewBag.countthis.ToString("N0"))đ</span>
+            <span>Doanh thu tuần này</span>
+        </p>
+        <p class="ml-auto d-flex flex-column text-right">
+            <span class="text-success">
+                @{
+                    int countthis = ViewBag.countthis, countlast = ViewBag.countlast;
+                    if (countlast == 0)
+                    {
+                        if (countthis == 0)
+                        {
+                            <i class="fas fa-equals"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-arrow-up"></i> @: 100%
+                        }
+                    }
+                    else
+                    {
+                        if (countthis > countlast)
+                        {
+                            <i class="fas fa-arrow-up"></i> @Math.Round(1.0 * countthis / (countthis + countlast) * 100, 2)<span>%</span>
+                        }
+                        else if (countlast == countthis)
+                        {
+                            <i class="fas fa-equals"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-arrow-down"></i> @Math.Round(1.0 * countthis / (countthis + countlast) * 100, 2)<span>%</span>
+                        }
+                    }
+                }
+            </span>
+            <span class="text-muted">Kể từ tuần trước</span>
+        </p>
+    </div>
+    <!-- /.d-flex -->
+
+    <div class="position-relative mb-4">
+        <canvas id="sales-chart" style="height:287px"></canvas>
+    </div>
+    <script>
+        'use strict'
+        var ticksStyle = {
+            fontColor: '#495057',
+            fontStyle: 'bold'
+        }
+        var mode = 'index'
+        var intersect = true
+        const data1 = [];
+        const data2 = [];
+        @foreach (var item in ViewBag.thisweek)
+        {
+                @:data1.push(@item)
+            }
+        @foreach(var item in ViewBag.lastweek)
+            {
+                @:data2.push(@item)
+            }
+        var salesChart = $('#sales-chart');
+        new Chart(salesChart, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tues', 'Wed', 'Thurs', 'Frid', 'Satur', 'Sun'],
+                datasets: [
+                    {
+                        backgroundColor: '#007bff',
+                        borderColor: '#007bff',
+                        data: data1
+                    },
+                    {
+                        backgroundColor: '#ced4da',
+                        borderColor: '#ced4da',
+                        data: data2
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                hover: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        // display: false,
+                        gridLines: {
+                            display: true,
+                            lineWidth: '4px',
+                            color: 'rgba(0, 0, 0, .2)',
+                            zeroLineColor: 'transparent'
+                        },
+                        ticks: $.extend({
+                            beginAtZero: true,
+
+                            // Include a dollar sign in the ticks
+                            callback: function (value) {
+                                if (value >= 1000) {
+                                    value /= 1000
+                                    value += 'k'
+                                }
+
+                                return value + ' đ'
+                            }
+                        }, ticksStyle)
+                    }],
+                    xAxes: [{
+                        display: true,
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: ticksStyle
+                    }]
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>
+

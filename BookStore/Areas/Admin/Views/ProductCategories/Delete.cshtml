@@ -1,0 +1,116 @@
+﻿@model BookStore.Common.ProductCategory
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header{
+    <span class="text-danger">Bạn có chắc muốn xóa thể loại sách:</span> <span class="text-danger font-weight-bold">@Model.Name</span>
+}
+
+<style>
+    .hover_img p {
+        position: relative;
+    }
+
+        .hover_img p span {
+            position: absolute;
+            display: none;
+            z-index: 99;
+        }
+
+        .hover_img p:hover span {
+            display: block;
+        }
+</style>
+
+<div>
+    <table class="table table-bordered table-hover col-md-6 ml-md-4">
+        <tr class="bg-primary">
+            <th>Thuộc tính</th>
+            <th>Giá trị</th>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Name)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Image)
+            </td>
+
+            <td>
+                <div class="hover_img">
+                    <p>@Model.Image<span><img src="~/Images/@Model.Image" alt="@Model.Image" width="200" /></span></p>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.MetaTitle)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.MetaTitle)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.DisplayOrder)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.DisplayOrder)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.CreatedDate)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.CreatedBy)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Status)
+            </td>
+
+            <td>
+                @(Model.Status==true?"Hiện":"Ẩn")
+            </td>
+        </tr>
+    </table>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-default" /> |
+            @Html.ActionLink("Quay lại trang thể loại sách", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body{
+            width:100%;
+            height:100%;
+            font-family:'Times New Roman';
+        }
+        td th{
+            padding:5px 8px;
+        }
+    </style>
+</head>
+<body>
+    <header style="text-align:center;text-transform:uppercase">
+        <h2>
+            hóa đơn điện tử
+        </h2>
+    </header>
+    <table style="margin:10px;width:100%">
+        <thead style="background-color: #7fad39;color:white;text-align:left">
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá/sp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{CartDetail}}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th style="background-color: #7fad39;color:white;text-align:left">Thành tiền</th>
+                <th colspan="2">{{TotalPrice}}đ</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    Cảm ơn quý khách đã sử dụng dịch vụ của chúng tôi. <a href="{{BookStore}}">Tiếp tục mua sắm</a>
+</body>
+</html>

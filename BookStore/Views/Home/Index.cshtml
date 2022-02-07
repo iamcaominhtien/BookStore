@@ -1,0 +1,468 @@
+﻿@model List<BookStore.Common.ProductCategory>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    int limit = 8;
+    int count, n;
+}
+
+<head>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script>
+        $("#Home_menu").addClass("active");
+    </script>
+</head>
+@*<img src="~/Images/bookish_890x396.jpg" />*@
+@*/Assets/Client/img/hero/banner.jpg*@
+@section slide {
+    <div class="hero__item set-bg" data-setbg="/Images/bookish_890x396.jpg" style="margin-top:40px">
+    </div>
+}
+
+<section class="categories">
+    <div class="container">
+        <div class="row">
+            <div class="categories__slider owl-carousel">
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" @*data-setbg="/Assets/Client/img/categories/cat-1.jpg"*@ data-setbg="/Images/@item.Image">
+                            <h5><a href="/san-pham/@item.MetaTitle-@item.ID">@item.Name</a></h5>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Categories Section End -->
+<!-- Featured Section Begin -->
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Featured Book</h2>
+                </div>
+                <div class="featured__controls" style="font-family:Arial">
+                    <ul>
+                        @{
+                            bool begin = false;
+                            foreach (var item in Model)
+                            {
+                                if (begin == true)
+                                {
+                                    <li data-filter=".@item.MetaTitle" id="_@item.MetaTitle">@item.Name</li>
+                                }
+                                else
+                                {
+                                    begin = true;
+                                    <li data-filter=".@item.MetaTitle" id="_@item.MetaTitle" class="active mixitup-control-active mixitup-control-active">@item.Name</li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            @{
+                count = 0;
+                var listproduct = ViewBag.Products;
+                n = Enumerable.Count(listproduct);
+                int i = 0;
+
+                //In cac san pham dau tien
+                for (; i < n - 1; i++)
+                {
+                    if (count < limit)
+                    {
+                        if (listproduct[i].CategoryID == listproduct[i + 1].CategoryID)
+                        {
+                            <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle">
+                                <div class="featured__item">
+                                    <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                        <ul class="featured__item__pic__hover">
+                                            @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
+                                            @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
+                                            <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="featured__item__text">
+                                        <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                        <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle">
+                                <div class="featured__item">
+                                    <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                        <ul class="featured__item__pic__hover">
+                                            @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
+                                            @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
+                                            <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="featured__item__text">
+                                        <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                        <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            i++;
+                            break;
+                        }
+                    }
+                    else { break; }
+                    count++;
+                }
+
+                count = 0;
+                for (; i < n - 1; i++)
+                {
+                    if (count != limit && listproduct[i].CategoryID == listproduct[i + 1].CategoryID)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle" style="display:none">
+                            <div class="featured__item">
+                                <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                    <ul class="featured__item__pic__hover">
+                                        @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
+                                        @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
+                                        <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="featured__item__text">
+                                    <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                    <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
+                                </div>
+                            </div>
+                        </div>
+                        count++;
+                    }
+                    else if (count == limit)
+                    {
+                        count = 0;
+                        for (; i < n - 1; i++)
+                        {
+                            if (listproduct[i].CategoryID != listproduct[i + 1].CategoryID)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (count != limit)
+                        {
+                            <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle" style="display:none">
+                                <div class="featured__item">
+                                    <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                        <ul class="featured__item__pic__hover">
+                                            @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
+                                            @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
+                                            <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="featured__item__text">
+                                        <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                        <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        count = 0;
+                    }
+                }
+
+                if (count == limit)
+                {
+                    i = n - 1;
+                    if (listproduct[i].MetaTitle != listproduct[i - 1].MetaTitle)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle" style="display:none">
+                            <div class="featured__item">
+                                <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                    <ul class="featured__item__pic__hover">
+                                        @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
+                                        @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
+                                        <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="featured__item__text">
+                                    <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                    <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    i = n - 1;
+                    <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle" style="display:none">
+                        <div class="featured__item">
+                            <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                <ul class="featured__item__pic__hover">
+                                    @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
+                                    @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
+                                    <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="featured__item__text">
+                                <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+<!-- Featured Section End -->
+<!-- Banner Begin -->
+<div class="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-3 col-sm-3">
+                <div class="banner__pic">
+                    <img src="~/Images/387_03_1.png" alt="387_03_1.png" style="width:100%;height:auto">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-3 col-sm-3">
+                <div class="banner__pic">
+                    <img src="~/Images/387_03_2.png" alt="387_03_2.png" style="width:100%;height:auto">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-3 col-sm-3">
+                <div class="banner__pic">
+                    <img src="~/Images/387_03_3.png" alt="387_03_3.png" style="width:100%;height:auto">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner End -->
+<!-- Latest Product Section Begin -->
+<section class="latest-product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Latest Books</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        @{
+                            n = Enumerable.Count(ViewBag.LatestProducts);
+                            var latestproducts = ViewBag.LatestProducts;
+                            int thuong = n / 3, du = n - thuong * 3, j = 0;
+                            i = 0;
+
+                            for (; i < thuong; i++)
+                            {
+                                count = 0;
+                                <div class="latest-prdouct__slider__item">
+                                    @for (; j < n; j++)
+                                    {
+                                        if (count == 3)
+                                        {
+                                            break;
+                                        }
+                                        <a href="/chi-tiet/@latestproducts[j].MetaTitle-@latestproducts[j].ID" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="~/Images/@latestproducts[j].Image" alt="@latestproducts[j].Name" style="width:110px;height:110px">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                @{
+                                                    string nameproduct = (j + 1).ToString() + ") " + latestproducts[j].Name;
+                                                    string priceproduct = latestproducts[j].Price.ToString("N0") + "đ";
+                                                }
+                                                <h6>@nameproduct</h6>
+                                                <span>@priceproduct</span>
+                                            </div>
+                                        </a>
+                                        count++;
+                                    }
+                                </div>
+                            }
+
+                            if (du > 0)
+                            {
+                                count = 0;
+
+                                <div class="latest-prdouct__slider__item">
+                                    @for (; j < n; j++)
+                                    {
+                                        if (count == 3)
+                                        {
+                                            break;
+                                        }
+                                        <a href="/chi-tiet/@latestproducts[j].MetaTitle-@latestproducts[j].ID" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="~/Images/@latestproducts[j].Image" alt="@latestproducts[j].Name" style="width:110px;height:110px">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                @{
+                                                    string nameproduct = (j + 1).ToString() + ") " + latestproducts[j].Name;
+                                                    string priceproduct = latestproducts[j].Price.ToString("N0") + "đ";
+                                                }
+                                                <h6>@nameproduct</h6>
+                                                <span>@priceproduct</span>
+                                            </div>
+                                        </a>
+                                        count++;
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Top Rated Books</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        @{
+                            n = Enumerable.Count(ViewBag.TopRatedProduct);
+                            var topratedproducts = ViewBag.TopRatedProduct;
+                            thuong = n / 3; du = n - thuong * 3; j = 0;
+                            i = 0;
+
+                            for (; i < thuong; i++)
+                            {
+                                count = 0;
+                                <div class="latest-prdouct__slider__item">
+                                    @for (; j < n; j++)
+                                    {
+                                        if (count == 3)
+                                        {
+                                            break;
+                                        }
+                                        <a href="/chi-tiet/@topratedproducts[j].MetaTitle-@topratedproducts[j].ID" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="~/Images/@topratedproducts[j].Image" alt="@topratedproducts[j].Name" style="width:110px;height:110px">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                @{
+                                                    string nameproduct = (j + 1).ToString() + ") " + topratedproducts[j].Name;
+                                                    string priceproduct = topratedproducts[j].Price.ToString("N0") + "đ";
+                                                }
+                                                <h6>@nameproduct</h6>
+                                                <span>@priceproduct</span>
+                                            </div>
+                                        </a>
+                                        count++;
+                                    }
+                                </div>
+                            }
+
+                            if (du > 0)
+                            {
+                                count = 0;
+
+                                <div class="latest-prdouct__slider__item">
+                                    @for (; j < n; j++)
+                                    {
+                                        if (count == 3)
+                                        {
+                                            break;
+                                        }
+                                        <a href="/chi-tiet/@topratedproducts[j].MetaTitle-@topratedproducts[j].ID" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="~/Images/@topratedproducts[j].Image" alt="@topratedproducts[j].Name" style="width:110px;height:110px">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                @{
+                                                    string nameproduct = (j + 1).ToString() + ") " + topratedproducts[j].Name;
+                                                    string priceproduct = topratedproducts[j].Price.ToString("N0") + "đ";
+                                                }
+                                                <h6>@nameproduct</h6>
+                                                <span>@priceproduct</span>
+                                            </div>
+                                        </a>
+                                        count++;
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Hot Books</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        @{
+                            n = Enumerable.Count(ViewBag.HotProduct);
+                            var hotproduct = ViewBag.HotProduct;
+                            thuong = n / 3; du = n - thuong * 3; j = 0;
+                            i = 0;
+
+                            for (; i < thuong; i++)
+                            {
+                                count = 0;
+                                <div class="latest-prdouct__slider__item">
+                                    @for (; j < n; j++)
+                                    {
+                                        if (count == 3)
+                                        {
+                                            break;
+                                        }
+                                        <a href="/chi-tiet/@hotproduct[j].MetaTitle-@hotproduct[j].ID" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="~/Images/@hotproduct[j].Image" alt="@hotproduct[j].Name" style="width:110px;height:110px">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                @{
+                                                    string nameproduct = (j + 1).ToString() + ") " + hotproduct[j].Name;
+                                                    string priceproduct = hotproduct[j].Price.ToString("N0") + "đ";
+                                                }
+                                                <h6>@nameproduct</h6>
+                                                <span>@priceproduct</span>
+                                            </div>
+                                        </a>
+                                        count++;
+                                    }
+                                </div>
+                            }
+
+                            if (du > 0)
+                            {
+                                count = 0;
+
+                                <div class="latest-prdouct__slider__item">
+                                    @for (; j < n; j++)
+                                    {
+                                        if (count == 3)
+                                        {
+                                            break;
+                                        }
+                                        <a href="/chi-tiet/@hotproduct[j].MetaTitle-@hotproduct[j].ID" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="~/Images/@hotproduct[j].Image" alt="@hotproduct[j].Name" style="width:110px;height:110px">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                @{
+                                                    string nameproduct = (j + 1).ToString() + ") " + hotproduct[j].Name;
+                                                    string priceproduct = hotproduct[j].Price.ToString("N0") + "đ";
+                                                }
+                                                <h6>@nameproduct</h6>
+                                                <span>@priceproduct</span>
+                                            </div>
+                                        </a>
+                                        count++;
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="mt-4"></div>

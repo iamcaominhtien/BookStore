@@ -1,0 +1,135 @@
+﻿@model IEnumerable<BookStore.Common.ManagerGroup>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var grid = new WebGrid(Model, canPage: true, sortFieldName: "ID", rowsPerPage: 6);
+}
+
+@section header{
+    Danh sách các nhóm
+}
+
+@section jsFooter{
+    <script src="~/Assets/Admin/js/controller/managerController.js"></script>
+}
+
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div class="row col-md-8 col-lg-6 mx-auto">
+            <table class="form-group mx-auto col-md-9 col-lg-10 mb-0">
+                <tr>
+                    <td class="mr-4">
+                        @Html.Editor("searchString", new { htmlAttributes = new { @Placeholder = "Tên đăng nhập", @class = "form-control" } })
+                    </td>
+                    <td>
+                        @Html.DropDownList("Status", new List<SelectListItem>
+                        {
+                              new SelectListItem { Text = "Trạng thái", Value = "", Disabled=true, Selected=true},
+                              new SelectListItem { Text = "Cả hai", Value = "",},
+                              new SelectListItem { Text = "Khóa", Value = "0"},
+                              new SelectListItem { Text = "Kích hoạt", Value = "1"}
+                        }, new { @class = "form-control" }) 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mr-4">
+                        @Html.Editor("fromDate", new { htmlAttributes = new { @Placeholder = "Từ ngày", @class = "form-control textbox-n",@type="text", @onfocus = "(this.type='date')" } })
+                        @*< input class="form-control textbox-n" name="fromDate" placeholder="Từ ngày" type="text" onfocus="(this.type='date')" />*@
+                    </td>
+                    <td>
+                        @Html.Editor("toDate", new { htmlAttributes = new { @Placeholder = "Đến ngày", @class = "form-control textbox-n", @type = "text", @onfocus = "(this.type='date')" } })
+                        @*<input class="form-control textbox-n bg-white" name="toDate" placeholder="Đến ngày" type="text" onfocus="(this.type='date')" />*@
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="form-control btn btn-primary d-block col-md-3 col-lg-2 align-content-center mx-auto">Tìm kiếm</button>
+        </div>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Nhập nhóm mới", "Create")
+</p>
+<html>
+<head>
+    <style type="text/css">
+        .grid-footer {
+            color: #000;
+            font: 17px Calibri;
+                            text-align: center;
+            font-weight: bold;
+        }
+
+            .grid-footer a {
+                            /*background-color: #ffffff;
+                            color: blue;*/
+                            background-color: blue;
+                        color: white;
+                            border-radius: 5px;
+                            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                        /*padding: 1px 10px 2px 10px;*/
+                        padding: 3px 13px;
+                        }
+
+                .grid-footer a:active, a:hover {
+                            background-color: #ffffff;
+                    color: #FFAD33;
+                    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                        }
+
+        .alternatingRowStyle {
+                            background-color: aliceblue;
+                        }
+
+                        table .table1 {
+                            text-align: left;
+                            margin-left: 0px;
+                            margin-right: 0px;
+                        width: 800px;
+                        }
+
+        .tr, .td {
+                            text-align: left;
+                        }
+
+                        thead {
+                            background-color: #007bff;
+        }
+
+                        thead a {
+                            color: white;
+                        }
+    </style>
+</head>
+<body>
+    <div id="gridContent bg-white">
+        @grid.GetHtml(
+            tableStyle: "table table-bordered table-hover",
+            footerStyle: "grid-footer",
+            fillEmptyRows: true,
+            mode: WebGridPagerModes.All,
+            alternatingRowStyle: "alternatingRowStyle",
+            columns: new[]  // colums in grid
+            {
+                grid.Column("STT",format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex),
+                grid.Column("Name","Tên nhóm"),
+                grid.Column("Note","Ghi chú"),
+                grid.Column("CreatedDate","Ngày thêm",format:@<text>@(item.CreatedDate.ToString("dd-MM-yyyy, hh-m-s tt"))</text>),
+grid.Column("Status","Status",format:@<text>@(item.Status==true?"Hiện":"Ẩn")</text>),
+grid.Column("Chức năng", format: @<text>
+    <a href="@Url.Action("Edit",
+                                                new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Cập nhật dữ liệu"><img src="/images/edit.png" width="20" height="20" /></abbr></a>
+    <a href="@Url.Action("Delete",
+                                                new { id = item.ID.ToString().Trim()})" class="edit-btn">
+        <abbr title="Xóa dữ liệu">
+            <img src="/images/delete.png" width="20" height="20" />
+        </abbr>
+    </a>
+</text>),
+}
+)
+    </div>
+</body>
+</html>

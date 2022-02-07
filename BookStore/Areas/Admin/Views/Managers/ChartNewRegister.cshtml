@@ -1,0 +1,89 @@
+﻿@model List<BookStore.Common.Product>
+
+@{
+    Layout = null;
+    List<int> data1 = new List<int>();
+    data1.Add(860); data1.Add(1140); data1.Add(1060); data1.Add(1060); data1.Add(1070); data1.Add(1110); data1.Add(1330);
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Assets/Admin/js/Chart.js"></script>
+</head>
+<body>
+    <div class="d-flex">
+        <p class="d-flex flex-column">
+            <span class="text-bold text-lg">@ViewBag.countthis</span>
+            <span>Khách hàng mới</span>
+        </p>
+        <p class="ml-auto d-flex flex-column text-right">
+            <span class="text-success">
+                @{
+                    int countthis = ViewBag.countthis, countlast = ViewBag.countlast;
+                    if (countlast == 0)
+                    {
+                        if (countthis == 0)
+                        {
+                            <i class="fas fa-equals"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-arrow-up"></i> @:100%
+                        }
+                    }
+                    else if (countthis > countlast)
+                    {
+                        <i class="fas fa-arrow-up"></i> @(Math.Round(1.0 * countthis / (countthis + countlast) * 100,2))<span>%</span>
+                    }
+                    else if (countthis == countlast)
+                    {
+                        <i class="fas fa-equals"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-arrow-down"></i><span>@(Math.Round(1.0*countlast / (countthis + countlast) * 100,2))</span><span>%</span>
+                    }
+                }
+            </span>
+            <span class="text-muted">Kể từ tuần trước</span>
+        </p>
+    </div>
+    <div class="position-relative mb-4">
+        <canvas id="register_chart" style="height:200px"></canvas>
+        <script>
+        const present = [];
+        const last = [];
+        @foreach(var item in ViewBag.thisweek)
+            {
+                @: present.push(@item)
+            }
+        @foreach(var item in ViewBag.lastweek)
+            {
+                @: last.push(@item)
+            }
+        var xValues = ['Mon','Tue','Wed','Thurs','Frid','Sar','Sun'];
+        //var xValues = [100, 200, 300, 400, 500, 600, 700];
+
+        new Chart("register_chart", {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    data: present,
+                    borderColor: "red",
+                    fill: false
+                }, {
+                    data: last,
+                    borderColor: "yellow",
+                    fill: false
+                }]
+            },
+            options: {
+                legend: { display: false }
+            }
+        });
+        </script>
+    </div>
+</body>
+</html>

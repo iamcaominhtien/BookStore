@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="https://bsite.net/tiencm61134486/" />
+  <setParameter name="BookStoreEntities-Web.config Connection String" value="metadata=res://*/Common.Model_BookStore.csdl|res://*/Common.Model_BookStore.ssdl|res://*/Common.Model_BookStore.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=sql.bsite.net\MSSQL2016;initial catalog=tiencm61134486_BookStore;user id=tiencm61134486_BookStore;password=12345678;MultipleActiveResultSets=True;App=EntityFramework&quot;" />
+</parameters>

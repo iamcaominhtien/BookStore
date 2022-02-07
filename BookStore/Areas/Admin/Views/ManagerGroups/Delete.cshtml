@@ -1,0 +1,65 @@
+﻿@model BookStore.Common.ManagerGroup
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header{
+    Bạn có chắc muôn xóa nhóm: <span class="text-danger font-weight-bold">@Model.Name</span>    
+}
+<table class="table table-bordered table-hover col-md-10 ml-md-4">
+    <tr class="bg-primary">
+        <th>Thuộc tính</th>
+        <th>Giá trị</th>
+    </tr>
+
+    <tr>
+        <td class="mr-4">
+            @Html.DisplayNameFor(model => model.Name)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.Name)
+        </td>
+    </tr>
+
+    <tr>
+        <td class="mr-4">
+            @Html.DisplayNameFor(model => model.Note)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.Note)
+        </td>
+    </tr>
+
+    <tr>
+        <td class="mr-4">
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </td>
+
+        <td>
+            @Model.CreatedDate.Value.ToString("dd-MM-yyyy HH:m:s")
+        </td>
+    </tr>
+
+    <tr>
+        <td class="mr-4">
+            @Html.DisplayNameFor(model => model.Status)
+        </td>
+
+        <td>
+            @(Model.Status==true?"Kích hoạt":"Khóa")
+        </td>
+    </tr>
+</table>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Xóa" class="btn btn-default" /> |
+        @Html.ActionLink("Quay lại trang danh sách nhóm", "Index")
+    </div>
+}

@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "ManagerHome";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header{
+    @{
+        var date = DateTime.Now;
+        switch (Convert.ToInt32(date.DayOfWeek))
+        {
+            case 0:
+                <span class="font-weight-bold">Chủ Nhật</span>
+                break;
+            case 1:
+                <span class="font-weight-bold">Thứ 2</span>
+                break;
+            case 2:
+                <span class="font-weight-bold">Thứ 3</span>
+                break;
+            case 3:
+                <span class="font-weight-bold">Thứ 4</span>
+                break;
+            case 4:
+                <span class="font-weight-bold">Thứ 5</span>
+                break;
+            case 5:
+                <span class="font-weight-bold">Thứ 6</span>
+                break;
+            case 6:
+                <span class="font-weight-bold">Chủ 7</span>
+                break;
+        }
+        @:&nbsp; <span>@date.ToString("dd/MM/yyyy")</span>
+        @:&nbsp;
+        <span id="clock">
+            <span id="hour">@DateTime.Now.Hour</span>
+            <span>:</span>
+            <span id="minutes">@DateTime.Now.Minute</span>
+            <span>:</span>
+            <span id=second>@DateTime.Now.Second</span>
+        </span>
+    }
+}
+
+@section jsFooter{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+    <script>
+        function runClock() {
+            time = new Date
+            function getTimes() {
+                $("#second").html(new Date().getSeconds())
+                $("#minutes").html(new Date().getMinutes())
+                $("#hour").html(new Date().getHours())
+            }
+            t = setInterval(getTimes, 1000)
+        }
+
+        runClock();
+
+        function DownloadImage(a) {
+            $(a).get(0).toBlob(function (blob) {
+                saveAs(blob, a);
+            });
+        }
+    </script>
+}
+
+<div class="font-weight-bold text-uppercase h1 text-center mb-4">
+    chi tiết 7 ngày qua
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="d-flex justify-content-between">
+                            <h3 class="card-title">Thống kê khách hàng</h3>
+                            <span onclick="DownloadImage('#register_chart')" style="text-decoration:underline;color:blue;cursor:pointer">Export</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @{ Html.RenderAction("ChartNewRegister", "Managers");}
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-2">
+                                <i class="fas fa-square" style="color:red"></i> Tuần này
+                            </span>
+
+                            <span>
+                                <i class="fas fa-square" style="color:yellow"></i> Tuần trước
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">Sản phẩm bán chạy nhất</h3>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-striped table-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th>Tên</th>
+                                    <th>Giá</th>
+                                    <th>Lượt mua</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.productBestSeller)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="~/Images/@item.Image" alt="@item.Name" class="img-size-32 mr-2">
+                                            @item.Name
+                                        </td>
+                                        <td>@item.Price.ToString("N0")<span>đ</span></td>
+                                        <td>
+                                            <small class="text-success mr-1">
+                                                <i class="fas fa-arrow-up"></i>
+                                            </small>
+                                            @item.Quantity Sold
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col-md-6 -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="d-flex justify-content-between">
+                            <h3 class="card-title">Sales</h3>
+                            <span onclick="DownloadImage('#sales-chart')" style="text-decoration:underline;color:blue;cursor:pointer">Export</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @{ Html.RenderAction("SalesChart", "Managers");}
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-2">
+                                <i class="fas fa-square text-primary"></i> Tuần này
+                            </span>
+
+                            <span>
+                                <i class="fas fa-square text-gray"></i> Tuần trước
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">Online Store Overview</h3>
+                        <div class="card-tools">
+                            <a href="#" class="btn btn-sm btn-tool">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-tool">
+                                <i class="fas fa-bars"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-xl">
+                                <i class="ion ion-ios-refresh-empty"></i>
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                                <span class="font-weight-bold">
+                                    <i class="ion ion-android-arrow-up text-success"></i> 12%
+                                </span>
+                                <span class="text-muted">CONVERSION RATE</span>
+                            </p>
+                        </div>
+                        <!-- /.d-flex -->
+                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-warning text-xl">
+                                <i class="ion ion-ios-cart-outline"></i>
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                                <span class="font-weight-bold">
+                                    <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
+                                </span>
+                                <span class="text-muted">SALES RATE</span>
+                            </p>
+                        </div>
+                        <!-- /.d-flex -->
+                        <div class="d-flex justify-content-between align-items-center mb-0">
+                            <p class="text-danger text-xl">
+                                <i class="ion ion-ios-people-outline"></i>
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                                <span class="font-weight-bold">
+                                    <i class="ion ion-android-arrow-down text-danger"></i> 1%
+                                </span>
+                                <span class="text-muted">REGISTRATION RATE</span>
+                            </p>
+                        </div>
+                        <!-- /.d-flex -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /.content -->

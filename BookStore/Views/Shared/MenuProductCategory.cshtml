@@ -1,0 +1,14 @@
+﻿@model List<BookStore.Common.ProductCategory>
+
+<div class="hero__categories">
+    <div class="hero__categories__all">
+        <i class="fa fa-bars"></i>
+        <span>All departments</span>
+    </div>
+    <ul id="product_Category">
+        @foreach(var item in Model)
+            {
+                <li style="cursor:pointer"><a href="/san-pham/@item.MetaTitle-@item.ID">@item.Name</a></li>
+            }
+    </ul>
+</div>

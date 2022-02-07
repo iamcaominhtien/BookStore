@@ -1,0 +1,172 @@
+﻿@model BookStore.Common.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header{
+    Chi tiết về sản phẩm: <span class="text-danger font-weight-bold">@Model.Name</span>
+}
+
+<style>
+    .hover_img p {
+        position: relative;
+    }
+
+        .hover_img p span {
+            position: absolute;
+            display: none;
+            z-index: 99;
+        }
+
+        .hover_img p:hover span {
+            display: block;
+        }
+</style>
+
+<div>
+    <table class="table table-bordered table-hover col-md-10 ml-md-4">
+        <tr class="bg-primary">
+            <th>Thuộc tính</th>
+            <th>Giá trị</th>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Name)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.MetaTitle)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.MetaTitle)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Description)
+            </td>
+
+            <td>
+                @Html.Raw(Model.Description)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Image)
+            </td>
+
+            <td>
+                <div class="hover_img">
+                    <p>@Model.Image<span><img src="~/Images/@Model.Image" alt="@Model.Image" width="200" /></span></p>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Authors)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Authors)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Price)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Price)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.PromotionPrice)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.PromotionPrice)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Quantity)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Quantity)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.CreatedDate)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Detail)
+            </td>
+
+            <td>
+                @Html.Raw(Model.Detail)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.Status)
+            </td>
+
+            <td>
+                @(Model.Status==true?"Hiện":"Ẩn")
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.TopHot)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.TopHot)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mr-4">
+                @Html.DisplayNameFor(model => model.ViewCout)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.ViewCout)
+            </td>
+        </tr>
+
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Cập nhật", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Quay lại trang sản phẩm", "Index")
+</p>

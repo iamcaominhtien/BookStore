@@ -1,0 +1,432 @@
+﻿@model List<BookStore.Common.Product>
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    int n, i, count = 0;
+    long cateID = 0;
+
+
+}
+
+<head>
+    <link href="~/Assets/fontawesome/css/all.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script>
+        $("#Pages_menu").addClass("active");
+    </script>
+    <script>
+        //var html = " ";
+        let count = 1;
+        //let defaultPageSize = 6;
+        function GetProduct_Plus() {
+            count++;
+            $.ajax({
+                @{
+                    try
+                    {
+                        cateID = (long)Model[0].CategoryID;
+                    }
+                    catch
+                    {
+                        cateID = 1;
+                    }
+                }
+                url: "/ListProductByCategory/ProductPage",
+                data: { skip: count, cateID:@cateID},
+                dataType: 'json',
+                //contentType: "application/json; charset=utf-8",
+                type: "POST",
+                success: function (response) {
+                    var Name = response.Name;
+                    var Metatitle = response.Metatitle;
+                    var ID = response.ID;
+                    var Image = response.Image;
+                    var Price = response.Price;
+                    templateHTML = document.getElementById('rowTemplate').innerHTML;
+                    if (Name.length > 0) {
+                        $('#productPagination').empty();
+                        for (i = 0; i < Name.length; i++) {
+                            var html = templateHTML.replace(/{Image}/g, Image[i]).replace(/{Name}/g, Name[i]).replace(/{ID}/g, ID[i]).replace(/{Metatitle}/g, Metatitle[i]).replace(/{Price}/g, Price[i]);
+                            $('#productPagination').append(html);
+                        }
+                    }
+                    else { count--; }
+                },
+
+                error: function () {
+                    alert("Error")
+                },
+
+                complete: function (response) {
+                    //alert("complete")
+                },
+
+                failure: function (jqXHR, textStatus, errorThrown) {
+
+                    alert("HTTP Status: " + jqXHR.status + "; Error Text: " + jqXHR.responseText);    //error message is displayed
+
+                }
+            })
+        }
+        function GetProduct_Substract() {
+            if (count > 1) {
+                count = count - 1;
+                $.ajax({
+                    @{
+                        try
+                        {
+                            cateID = (long)Model[0].CategoryID;
+                        }
+                        catch
+                        {
+                            cateID = 1;
+                        }
+                    }
+                    url: "/ListProductByCategory/ProductPage",
+                    data: { skip: count, cateID:@cateID},
+                    dataType: 'json',
+                    //contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    success: function (response) {
+                        //countTemp = 0;
+                        var Name = response.Name;
+                        var Metatitle = response.Metatitle;
+                        var ID = response.ID;
+                        var Image = response.Image;
+                        var Price = response.Price;
+                        templateHTML = document.getElementById('rowTemplate').innerHTML;
+                        $('#productPagination').empty();
+                        for (i = 0; i < Name.length; i++) {
+                            var html = templateHTML.replace(/{Image}/g, Image[i]).replace(/{Name}/g, Name[i]).replace(/{ID}/g, ID[i]).replace(/{Metatitle}/g, Metatitle[i]).replace(/{Price}/g, Price[i]);
+                            $('#productPagination').append(html);
+                        }
+                    },
+
+                    error: function () {
+                        alert("Error")
+                    },
+
+                    complete: function (response) {
+                        //alert("complete")
+                    },
+
+                    failure: function (jqXHR, textStatus, errorThrown) {
+
+                        alert("HTTP Status: " + jqXHR.status + "; Error Text: " + jqXHR.responseText);    //error message is displayed
+
+                    }
+                })
+            }
+        }
+    </script>
+</head>
+
+<style>
+    .pagination-container .pagination li {
+        margin-right: 10px;
+    }
+
+    .product__pagination button{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 1px solid #b2b2b2;
+        font-size: 14px;
+        color: #b2b2b2;
+        font-weight: 700;
+        line-height: 28px;
+        text-align: center;
+        margin-right: 16px;
+        transition: all, 0.3s;
+    }
+
+        .product__pagination button:hover{
+            background: #7fad39;
+            border-color: #7fad39;
+            color: #ffffff;
+        }
+
+        .product__pagination button:last-child{
+            margin-right: 0;
+        }
+</style>
+
+<script id="rowTemplate" type="text/html">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="product__item">
+            <div class="product__item__pic set-bg" style="background-image: url('/Images/{Image}'); background-size: 194.4px 200px">
+                <ul class="product__item__pic__hover">
+                    @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
+                    <li><a href="/them-gio-hang?productID={ID}&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                </ul>
+            </div>
+            <div class="product__item__text">
+                <h6><a href="/chi-tiet/{Metatitle}-{ID}">{Name}</a></h6>
+                <h5>{Price}<span>đ</span></h5>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/Assets/Client/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Nhà sách Phương Nam</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Home</a>
+                        <span>@ViewBag.nameProductCategory</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>Danh mục</h4>
+                        <ul>
+                            @{
+                                foreach (var item in ViewBag.ProductCategory)
+                                {
+                                    <li><a href="/san-pham/@item.MetaTitle-@item.ID">@item.Name</a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+
+                    @*lọc theo giá sản phẩm*@
+                    @*<div class="sidebar__item">
+                        <h4>Price</h4>
+                        <div class="price-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                 data-min="10" data-max="540">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                            </div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                    <div class="sidebar__item">
+                        <div class="latest-product__text">
+                            <h4>Latest Books</h4>
+                            <div class="latest-product__slider owl-carousel">
+                                @{
+                                    n = Enumerable.Count(ViewBag.LatestProducts);
+                                    var latestproducts = ViewBag.LatestProducts;
+                                    int thuong = n / 3, du = n - thuong * 3, j = 0;
+                                    i = 0;
+
+                                    for (; i < thuong; i++)
+                                    {
+                                        count = 0;
+                                        <div class="latest-prdouct__slider__item">
+                                            @for (; j < n; j++)
+                                            {
+                                                if (count == 3)
+                                                {
+                                                    break;
+                                                }
+                                                <a href="/chi-tiet/@latestproducts[j].MetaTitle-@latestproducts[j].ID" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="~/Images/@latestproducts[j].Image" alt="@latestproducts[j].Name" style="width:110px;height:110px">
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        @{
+                                                            string nameproduct = (j + 1).ToString() + ") " + latestproducts[j].Name;
+                                                            string priceproduct = latestproducts[j].Price.ToString("N0") + "đ";
+                                                        }
+                                                        <h6>@nameproduct</h6>
+                                                        <span>@priceproduct</span>
+                                                    </div>
+                                                </a>
+                                                count++;
+                                            }
+                                        </div>
+                                    }
+
+                                    if (du > 0)
+                                    {
+                                        count = 0;
+
+                                        <div class="latest-prdouct__slider__item">
+                                            @for (; j < n; j++)
+                                            {
+                                                if (count == 3)
+                                                {
+                                                    break;
+                                                }
+                                                <a href="/chi-tiet/@latestproducts[j].MetaTitle-@latestproducts[j].ID" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="~/Images/@latestproducts[j].Image" alt="@latestproducts[j].Name" style="width:110px;height:110px">
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        @{
+                                                            string nameproduct = (j + 1).ToString() + ") " + latestproducts[j].Name;
+                                                            string priceproduct = latestproducts[j].Price.ToString("N0") + "đ";
+                                                        }
+                                                        <h6>@nameproduct</h6>
+                                                        <span>@priceproduct</span>
+                                                    </div>
+                                                </a>
+                                                count++;
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="product__discount">
+                    <div class="section-title product__discount__title text-center">
+                        <h2>Sale Off</h2>
+                    </div>
+                    <div class="row">
+                        <div class="product__discount__slider owl-carousel">
+                            @foreach (var item in ViewBag.PromotionProduct)
+                            {
+                                <div class="col-lg-4">
+                                    <div class="product__discount__item">
+                                        <div class="product__discount__item__pic set-bg"
+                                             data-setbg="/Images/@item.Image" style="background-size:262.5px 270px;">
+                                            <div class="product__discount__percent">-@(item.PromotionPrice)%</div>
+                                            <ul class="product__item__pic__hover">
+                                                @*<li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
+                                                <li><a href="/them-gio-hang?productID=@item.ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__discount__item__text">
+                                            @*<span>Dried Fruit</span>*@
+                                            <h5><a href="/chi-tiet/@item.MetaTitle-@item.ID">@item.Name</a></h5>
+                                            <div class="product__item__price">@(Math.Round((100-(int)item.PromotionPrice) * 1.0 / 100 * ((int)item.Price)).ToString("N0"))đ <span>@(item.Price.ToString("N0"))đ</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="filter__item">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-5">
+                            @*<div class="filter__sort">
+                        <span>Sort By</span>
+                        <form class="d-inline" action="/ListProductByCategory/SortBy" method="post">
+                            <select name="sortID" onchange="this.form.submit()">
+                                <option value="0">Default</option>
+                                <option value="1">Ngày đăng</option>
+                                <option value="2">Giá bán</option>
+                                <option value="3">Lượt mua</option>
+                            </select>
+                            <input type="hidden" name="cateID",value="@Model[0].CategoryID">
+                            <button type="submit" class="btn">Submit</button>
+                        </form>
+                    <form class="d-inline" action="/ListProductByCategory/SortBy" method="post">
+                        /them-gio-hang?productID=@Model.ID&quantity=1
+                        <select name="sortID" onchange="this.form.submit()">
+                            <option value="0">Default</option>
+                            <option value="1">Ngày đăng</option>
+                            <option value="2">Giá bán</option>
+                            <option value="3">Lượt mua</option>
+                        </select>
+                        <input type="hidden" name="cateID" ,value="@Model[0].CategoryID">
+                        <button type="submit" class="btn">Submit</button>
+                    </form>
+                    </div>*@
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="filter__found">
+                                <h6><span>@ViewBag.totalProductCategory</span> Products found</h6>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="filter__option">
+                                <span class="icon_grid-2x2"></span>
+                                <span class="icon_ul"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @{
+                    try
+                    {
+                        @*<div class="product__pagination">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>*@
+                    }
+                    catch
+                    {
+                        <div class="alert alert-danger text-danger">
+                            Chưa có sản phẩm nào thuộc danh mục @ViewBag.nameProductCategory
+                        </div>
+                    }
+                }
+                <div class="row" id="productPagination">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="/Images/@item.Image" style="background-size: 194.4px 200px">
+                                    <ul class="product__item__pic__hover">
+                                        @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
+                                        <li><a href="/them-gio-hang?productID=@item.ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="/chi-tiet/@item.MetaTitle-@item.ID">@item.Name</a></h6>
+                                    <h5>@item.Price.Value.ToString("N0")<span>đ</span></h5>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="product__pagination" id="product-page">
+                    @*<button class="btn px-3 text-white" onclick="GetProduct_Substract()" style="background-color: #7fad39"><i class="fas fa-caret-left" style="font-size:18px"></i></button>
+                    <button class="btn px-3 text-white" onclick="GetProduct_Plus()" style="background-color: #7fad39"><i class="fas fa-caret-right" style="font-size:18px"></i></button>*@
+                    <button onclick="GetProduct_Substract()"><i class="fas fa-caret-left" style="font-size:18px"></i></button>
+                    <button onclick="GetProduct_Plus()"><i class="fas fa-caret-right" style="font-size:18px"></i></button>
+                    @*<script>
+                        let totalpage = parseInt(@ViewBag.TotalPage);
+                        if (totalpage >= 6) {
+                            var html = '<button onclick="GetProduct_ThisPage(' + 0 + ')"><span style="font-size:18px">&gt;&gt;</button>';
+                            html = html + '<button onclick="GetProduct_Substract()"><i class="fas fa-caret-left" style="font-size:18px"></i></button>';
+                            html = html + '<button onclick="GetProduct_ThisPage(' + 3 + ')">3</button>';
+                            html = html + '<button onclick="GetProduct_ThisPage(' + 4 + ')">4</button>';
+                            html = html + '<button onclick="GetProduct_Plus()"><i class="fas fa-caret-right" style="font-size:18px"></i></button>';
+                            html = html + '<button onclick="GetProduct_ThisPage(' + totalpage + ')">&lt;&lt;</button>';
+                            $("#product-page").append(html);
+                        }
+                        else {
+                            var html = "";
+                            for (let i = 1; i <= totalpage; i++) {
+                                html = html + '<button onclick="GetProduct_ThisPage(' + i + ')"><<</button>';
+                            }
+                            $("#product-page").append(html);
+                        }
+                    </script>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
