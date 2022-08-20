@@ -11,7 +11,7 @@
 }
 
 @section jsFooter{
-    <script src="~/Assets/Admin/js/controller/managerController.js"></script>
+    <script src="@Url.Content("~/Assets/Admin/js/controller/managerController.js")"></script>
 }
 
 <html>
@@ -132,13 +132,11 @@ grid.Column("Email","Email"),
 grid.Column("Status","Trạng thái",format:@<text>@(item.Status==true?"Kích hoạt":"Tạm khóa")</text>),
 grid.Column("Chức năng", format:
 @<text>
-    @*<a href="@Url.Action("Edit",
-                                new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Cập nhật dữ liệu"><img src="/images/edit.png" width="20" height="20" /></abbr></a>*@
-    <a href="@Url.Action("Details", new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Xem chi tiết"><img src="/images/details.png" width="20" height="20" /></abbr></a>
+    <a href="@Url.Action("Details", new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Xem chi tiết"><img src="@Url.Content("~/images/details.png")" width="20" height="20" /></abbr></a>
     <a href="@Url.Action("Delete",
                                                 new { id = item.ID.ToString().Trim()})" class="edit-btn">
         <abbr title="Xóa dữ liệu">
-            <img src="/images/delete.png" width="20" height="20" />
+            <img src="@Url.Content("~/images/delete.png")" width="20" height="20" />
         </abbr>
     </a>
 </text>
