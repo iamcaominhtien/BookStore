@@ -12,6 +12,7 @@ using BookStore.Models;
 
 namespace BookStore.Controllers
 {
+    [RoutePrefix("dat-hang")]
     public class OrdersController : CheckSessionController
     {
         private BookStoreEntities db = new BookStoreEntities();
@@ -87,6 +88,8 @@ namespace BookStore.Controllers
             }
         }
 
+        [Route("",Order =1)]
+        [Route("chi-tiet-dat-hang",Order =0)]
         public ActionResult Index()
         {
             List<CartItem> list = (List<CartItem>)Session[CommonConstant.CartSession];
@@ -252,6 +255,7 @@ namespace BookStore.Controllers
             });
         }
 
+        [Route("xac-nhan-thanh-toan")]
         public ActionResult CheckOut()
         {
             var user = (UserLogin)Session[CommonConstant.USER_SESSION];
@@ -260,6 +264,7 @@ namespace BookStore.Controllers
             return View(cartdetail);
         }
 
+        [Route("thanh-toan")]
         public ActionResult Payment()
         {
             var cartdetail = (List<CartItem>)Session[CommonConstant.CartSession];
@@ -287,14 +292,21 @@ namespace BookStore.Controllers
             }
 
             //Send mail
-            string content = System.IO.File.ReadAllText(Server.MapPath("~/Assets/Client/template/cartEmail.html"));
+            try
+            {
+                string content = System.IO.File.ReadAllText(Server.MapPath("~/Assets/Client/template/cartEmail.html"));
 
-            content = content.Replace("{{CartDetail}}", cart_detail);
-            content = content.Replace("{{TotalPrice}}", totalPrice.ToString("N0"));
-            var userSession = (UserLogin)Session[CommonConstant.USER_SESSION];
-            var sendmail = new MailInfo();
-            sendmail.To = db.Users.SingleOrDefault(s => s.UserName == userSession.UserName).Email;
-            sendmail.SendMail(content);
+                content = content.Replace("{{CartDetail}}", cart_detail);
+                content = content.Replace("{{TotalPrice}}", totalPrice.ToString("N0"));
+                var userSession = (UserLogin)Session[CommonConstant.USER_SESSION];
+                var sendmail = new MailInfo();
+                sendmail.To = db.Users.SingleOrDefault(s => s.UserName == userSession.UserName).Email;
+                sendmail.SendMail(content);
+            }
+            catch
+            {
+
+            }
 
             cart.Status = false;
             db.Entry(cart).State = EntityState.Modified;

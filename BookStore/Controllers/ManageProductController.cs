@@ -8,12 +8,14 @@ using PagedList;
 
 namespace BookStore.Controllers
 {
+    [RoutePrefix("quan-li-sach")]
     public class ManageProductController : Controller
     {
         // GET: ManageProduct
         BookStoreEntities db = new BookStoreEntities();
         int pageSize = 8;
 
+        [Route("chi-tiet-sach-{cateid}")]
         public ActionResult DetailProduct(int cateid)
         {
             var product = db.Products.SqlQuery("exec DetailProduct " + cateid.ToString()).ToList();
@@ -35,7 +37,15 @@ namespace BookStore.Controllers
             },JsonRequestBehavior.AllowGet);
         }
 
+        [Route("tim-kiem-sach")]
+        [HttpPost]
         public ActionResult Search(string keyword)
+        {
+            return RedirectToAction("SearchResult", "ManageProduct", new { keyword = keyword });
+        }
+
+        [Route("ket-qua-tim-kiem/{keyword}")]
+        public ActionResult SearchResult(string keyword)
         {
             string searchstring = "exec SEARCH_PRODUCT_BY_KEY N'" + keyword + "','" + "','" + "'";
             //var products = db.Products.Where(x => x.Name.Contains(keyword)).ToList();

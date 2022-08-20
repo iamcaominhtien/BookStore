@@ -8,15 +8,14 @@
 }
 
 <head>
-    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.js")"></script>
     <script>
         $("#Home_menu").addClass("active");
     </script>
 </head>
-@*<img src="~/Images/bookish_890x396.jpg" />*@
-@*/Assets/Client/img/hero/banner.jpg*@
+
 @section slide {
-    <div class="hero__item set-bg" data-setbg="/Images/bookish_890x396.jpg" style="margin-top:40px">
+    <div class="hero__item set-bg" data-setbg="@Url.Content("~/Images/bookish_890x396.jpg")" style="margin-top:40px">
     </div>
 }
 
@@ -27,8 +26,8 @@
                 @foreach (var item in Model)
                 {
                     <div class="col-lg-3">
-                        <div class="categories__item set-bg" @*data-setbg="/Assets/Client/img/categories/cat-1.jpg"*@ data-setbg="/Images/@item.Image">
-                            <h5><a href="/san-pham/@item.MetaTitle-@item.ID">@item.Name</a></h5>
+                        <div class="categories__item set-bg" data-setbg="@Url.Content(String.Format("~/Images/{0}", @item.Image))">
+                            <h5><a href="@Url.Action("Index", "ListProductByCategory", new {cateid=item.ID})">@item.Name</a></h5>
                         </div>
                     </div>
                 }
@@ -82,15 +81,13 @@
                         {
                             <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle">
                                 <div class="featured__item">
-                                    <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                    <div class="featured__item__pic" data-setbg="@Url.Content("~/Assets/Client/img/featured/feature-1.jpg")" style="background-image:url('@Url.Content(String.Format("~/Images/{0}", listproduct[i].Image))');background-size:262.5px 270px;background-repeat:no-repeat">
                                         <ul class="featured__item__pic__hover">
-                                            @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
-                                            @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
-                                            <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a href="@Url.Action("AddItem", "Orders", new { productID = listproduct[i].ID, quantity = 1 })"><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
                                     <div class="featured__item__text">
-                                        <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                        <h6><a href="@Url.Action("DetailProduct", "ManageProduct", new {cateid= listproduct[i].ID })">@listproduct[i].Name</a></h6>
                                         <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
                                     </div>
                                 </div>
@@ -100,15 +97,13 @@
                         {
                             <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle">
                                 <div class="featured__item">
-                                    <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                    <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('@Url.Content(String.Format("~/Images/{0}", listproduct[i].Image))');background-size:262.5px 270px;background-repeat:no-repeat">
                                         <ul class="featured__item__pic__hover">
-                                            @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
-                                            @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
-                                            <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a href="@Url.Action("AddItem", "Orders", new { productID = listproduct[i].ID, quantity = 1 })"><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
                                     <div class="featured__item__text">
-                                        <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                        <h6><a href="@Url.Action("DetailProduct", "ManageProduct", new {cateid= listproduct[i].ID })">@listproduct[i].Name</a></h6>
                                         <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
                                     </div>
                                 </div>
@@ -128,15 +123,13 @@
                     {
                         <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle" style="display:none">
                             <div class="featured__item">
-                                <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('@Url.Content(String.Format("~/Images/{0}", listproduct[i].Image))');background-size:262.5px 270px;background-repeat:no-repeat">
                                     <ul class="featured__item__pic__hover">
-                                        @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
-                                        @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
-                                        <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="@Url.Action("AddItem", "Orders", new { productID = listproduct[i].ID, quantity = 1 })"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="featured__item__text">
-                                    <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                    <h6><a href="@Url.Action("DetailProduct", "ManageProduct", new {cateid= listproduct[i].ID })">@listproduct[i].Name</a></h6>
                                     <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
                                 </div>
                             </div>
@@ -160,15 +153,13 @@
                         {
                             <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle" style="display:none">
                                 <div class="featured__item">
-                                    <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                    <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('@Url.Content(String.Format("~/Images/{0}", listproduct[i].Image))');background-size:262.5px 270px;background-repeat:no-repeat">
                                         <ul class="featured__item__pic__hover">
-                                            @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
-                                            @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
-                                            <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a href="@Url.Action("AddItem", "Orders", new { productID = listproduct[i].ID, quantity = 1 })"><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
                                     <div class="featured__item__text">
-                                        <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                        <h6><a href="@Url.Action("DetailProduct", "ManageProduct", new {cateid= listproduct[i].ID })">@listproduct[i].Name</a></h6>
                                         <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
                                     </div>
                                 </div>
@@ -185,15 +176,13 @@
                     {
                         <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle" style="display:none">
                             <div class="featured__item">
-                                <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                                <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('@Url.Content(String.Format("~/Images/{0}", listproduct[i].Image))');background-size:262.5px 270px;background-repeat:no-repeat">
                                     <ul class="featured__item__pic__hover">
-                                        @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
-                                        @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
-                                        <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="@Url.Action("AddItem", "Orders", new { productID = listproduct[i].ID, quantity = 1 })"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="featured__item__text">
-                                    <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                    <h6><a href="@Url.Action("DetailProduct", "ManageProduct", new {cateid= listproduct[i].ID })">@listproduct[i].Name</a></h6>
                                     <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
                                 </div>
                             </div>
@@ -205,15 +194,13 @@
                     i = n - 1;
                     <div class="col-lg-3 col-md-4 col-sm-6 mix @listproduct[i].ProductCategory.MetaTitle" style="display:none">
                         <div class="featured__item">
-                            <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('/Images/@listproduct[i].Image');background-size:262.5px 270px;background-repeat:no-repeat">
+                            <div class="featured__item__pic" data-setbg="/Assets/Client/img/featured/feature-1.jpg" style="background-image:url('@Url.Content(String.Format("~/Images/{0}", listproduct[i].Image))');background-size:262.5px 270px;background-repeat:no-repeat">
                                 <ul class="featured__item__pic__hover">
-                                    @*<li><a href="#"><i class="fa fa-heart"></i></a></li>*@
-                                    @*<li><a href="#"><i class="fa fa-retweet"></i></a></li>*@
-                                    <li><a href="/them-gio-hang?productID=@listproduct[i].ID&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                    <li><a href="@Url.Action("AddItem", "Orders", new { productID = listproduct[i].ID, quantity = 1 })"><i class="fa fa-shopping-cart"></i></a></li>
                                 </ul>
                             </div>
                             <div class="featured__item__text">
-                                <h6><a href="/chi-tiet/@listproduct[i].MetaTitle-@listproduct[i].ID">@listproduct[i].Name</a></h6>
+                                <h6><a href="@Url.Action("DetailProduct", "ManageProduct", new {cateid= listproduct[i].ID })">@listproduct[i].Name</a></h6>
                                 <h5>@listproduct[i].Price.ToString("N0")<span>đ</span></h5>
                             </div>
                         </div>
@@ -230,17 +217,17 @@
         <div class="row">
             <div class="col-lg-4 col-md-3 col-sm-3">
                 <div class="banner__pic">
-                    <img src="~/Images/387_03_1.png" alt="387_03_1.png" style="width:100%;height:auto">
+                    <img src="@Url.Content("~/Images/387_03_1.png")" alt="387_03_1.png" style="width:100%;height:auto">
                 </div>
             </div>
             <div class="col-lg-4 col-md-3 col-sm-3">
                 <div class="banner__pic">
-                    <img src="~/Images/387_03_2.png" alt="387_03_2.png" style="width:100%;height:auto">
+                    <img src="@Url.Content("~/Images/387_03_2.png")" alt="387_03_2.png" style="width:100%;height:auto">
                 </div>
             </div>
             <div class="col-lg-4 col-md-3 col-sm-3">
                 <div class="banner__pic">
-                    <img src="~/Images/387_03_3.png" alt="387_03_3.png" style="width:100%;height:auto">
+                    <img src="@Url.Content("~/Images/387_03_3.png")" alt="387_03_3.png" style="width:100%;height:auto">
                 </div>
             </div>
         </div>
@@ -271,9 +258,9 @@
                                         {
                                             break;
                                         }
-                                        <a href="/chi-tiet/@latestproducts[j].MetaTitle-@latestproducts[j].ID" class="latest-product__item">
+                                        <a href="@Url.Action("DetailProduct", "ManageProduct", new { cateid= latestproducts[j].ID })" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="~/Images/@latestproducts[j].Image" alt="@latestproducts[j].Name" style="width:110px;height:110px">
+                                                <img src="@Url.Content(String.Format("~/Images/{0}",@latestproducts[j].Image))" alt="@latestproducts[j].Name" style="width:110px;height:110px">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 @{
@@ -300,9 +287,9 @@
                                         {
                                             break;
                                         }
-                                        <a href="/chi-tiet/@latestproducts[j].MetaTitle-@latestproducts[j].ID" class="latest-product__item">
+                                        <a href="@Url.Action("DetailProduct", "ManageProduct", new { cateid= latestproducts[j].ID })" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="~/Images/@latestproducts[j].Image" alt="@latestproducts[j].Name" style="width:110px;height:110px">
+                                                <img src="@Url.Content("~/Images/@latestproducts[j].Image")" alt="@latestproducts[j].Name" style="width:110px;height:110px">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 @{
@@ -341,9 +328,9 @@
                                         {
                                             break;
                                         }
-                                        <a href="/chi-tiet/@topratedproducts[j].MetaTitle-@topratedproducts[j].ID" class="latest-product__item">
+                                        <a href="@Url.Action("DetailProduct", "ManageProduct", new { cateid= topratedproducts[j].ID })" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="~/Images/@topratedproducts[j].Image" alt="@topratedproducts[j].Name" style="width:110px;height:110px">
+                                                <img src="@Url.Content(String.Format("~/Images/{0}", @topratedproducts[j].Image))" alt="@topratedproducts[j].Name" style="width:110px;height:110px">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 @{
@@ -370,9 +357,9 @@
                                         {
                                             break;
                                         }
-                                        <a href="/chi-tiet/@topratedproducts[j].MetaTitle-@topratedproducts[j].ID" class="latest-product__item">
+                                        <a href="@Url.Action("DetailProduct", "ManageProduct", new { cateid= topratedproducts[j].ID })" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="~/Images/@topratedproducts[j].Image" alt="@topratedproducts[j].Name" style="width:110px;height:110px">
+                                                <img src="@Url.Content(String.Format("~/Images/{0}", @topratedproducts[j].Image))" alt="@topratedproducts[j].Name" style="width:110px;height:110px">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 @{
@@ -411,9 +398,9 @@
                                         {
                                             break;
                                         }
-                                        <a href="/chi-tiet/@hotproduct[j].MetaTitle-@hotproduct[j].ID" class="latest-product__item">
+                                        <a href="@Url.Action("DetailProduct", "ManageProduct", new { cateid= hotproduct[j].ID })" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="~/Images/@hotproduct[j].Image" alt="@hotproduct[j].Name" style="width:110px;height:110px">
+                                                <img src="@Url.Content(String.Format("~/Images/{0}", @hotproduct[j].Image))" alt="@hotproduct[j].Name" style="width:110px;height:110px">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 @{
@@ -440,9 +427,9 @@
                                         {
                                             break;
                                         }
-                                        <a href="/chi-tiet/@hotproduct[j].MetaTitle-@hotproduct[j].ID" class="latest-product__item">
+                                        <a href="@Url.Action("DetailProduct", "ManageProduct", new { cateid= hotproduct[j].ID })" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="~/Images/@hotproduct[j].Image" alt="@hotproduct[j].Name" style="width:110px;height:110px">
+                                                <img src="@Url.Content(String.Format("~/Images/{0}", @hotproduct[j].Image))" alt="@hotproduct[j].Name" style="width:110px;height:110px">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 @{

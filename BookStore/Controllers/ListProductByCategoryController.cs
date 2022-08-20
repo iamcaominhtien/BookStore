@@ -12,6 +12,7 @@ using PagedList;
 
 namespace BookStore.Controllers
 {
+    [RoutePrefix("loai-sach")]
     public class ListProductByCategoryController : Controller
     {
         // GET: ListProductByCategory
@@ -19,6 +20,7 @@ namespace BookStore.Controllers
         static long IdOfCate = 1;
         int pageSize = 6;
 
+        [Route("danh-sach-san-pham/san-pham-{cateid:long}")]
         public ActionResult Index(long cateid)
         {
             IdOfCate = cateid;
@@ -51,6 +53,7 @@ namespace BookStore.Controllers
             return View("Index", products.ToPagedList(1, 6));
         }
 
+        [Route("danh-sach-san-pham/{cateid}")]
         public JsonResult ProductPage(int skip, int cateID)
         {
             List<string> lName = new List<string>();

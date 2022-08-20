@@ -1,5 +1,4 @@
 ﻿@model List<BookStore.Common.ProductCategory>
-
 <div class="hero__categories">
     <div class="hero__categories__all">
         <i class="fa fa-bars"></i>
@@ -8,7 +7,7 @@
     <ul id="product_Category">
         @foreach(var item in Model)
             {
-                <li style="cursor:pointer"><a href="/san-pham/@item.MetaTitle-@item.ID">@item.Name</a></li>
-            }
+                <li class="product-cate-detail" style="cursor:pointer"><a href="@Url.Action("Index", "ListProductByCategory", new {cateid= item.ID })">@item.Name</a></li>
+                }
     </ul>
 </div>

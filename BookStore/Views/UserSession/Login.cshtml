@@ -4,17 +4,17 @@
     Layout = null;
 }
 
-<link rel="stylesheet" href="~/Assets/Client/usersession/fonts/material-icon/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" href="@Url.Content("~/Assets/Client/usersession/fonts/material-icon/css/material-design-iconic-font.min.css")">
 <!-- Main css -->
-<link href="~/Content/bootstrap.css" rel="stylesheet" />
-<link rel="stylesheet" href="~/Assets/Client/usersession/css/style.css">
+<link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" />
+<link rel="stylesheet" href="@Url.Content("~/Assets/Client/usersession/css/style.css")">
 
 <div class="flex">
     <div class="container mt-2">
         <div class="signin-content">
             <div class="signin-image">
-                <figure><img src="~/Assets/Client/usersession/images/signin-image.jpg" alt="sing up image"></figure>
-                <a class="signup-image-link" href="/dang-ky" di>Create an account</a>
+                <figure><img src="@Url.Content("~/Assets/Client/usersession/images/signin-image.jpg")" alt="sing up image"></figure>
+                <a class="signup-image-link" href="@Url.Action("Register","UserSession")" di>Create an account</a>
             </div>
             <div class="signin-form">
                 <h2 class="form-title">Sign in</h2>

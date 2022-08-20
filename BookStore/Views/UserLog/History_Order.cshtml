@@ -9,16 +9,74 @@
 }
 
 <head>
-    <link href="~/Assets/fontawesome/css/all.min.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <script>
-        var html = " ";
-        let count = 0;
-        let defaultPageSize = 3;
-        function GetCart_Plus() {
-            count++;
+    <link href="@Url.Content("~/Assets/fontawesome/css/all.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")"></script>
+</head>
+
+<script>
+    var html = " ";
+    var count = 0;
+    let defaultPageSize = 3;
+    function checkButton() {
+        if (0 < count && count < Math.ceil((@ViewBag.CountProduct) / defaultPageSize)-1) {
+            document.getElementById("GetCart_Plus").disabled = false
+            document.getElementById("GetCart_Substract").disabled = false
+        }
+        if (count <= 0) {
+            document.getElementById("GetCart_Substract").disabled = true
+        }
+        if (count>=Math.ceil((@ViewBag.CountProduct) / defaultPageSize)-1) {
+            document.getElementById("GetCart_Plus").disabled = true
+        }
+    }
+    function GetCart_Plus() {
+        count++;
+        checkButton()
+        $.ajax({
+            url: "@Url.Action("GetUserCart", "UserLog")",
+            data: { skip: count, pageSize: defaultPageSize },
+            dataType: 'json',
+            //contentType: "application/json; charset=utf-8",
+            type: "POST",
+            success: function (response) {
+                //countTemp = 0;
+                var Name = response.Name;
+                var Price = response.Price;
+                var Quantity = response.Quantity;
+                var Image = response.Image;
+                var SumPrice = response.SumPrice;
+                templateHTML = document.getElementById('rowTemplate').innerHTML;
+                if (Name.length > 0) {
+                    $('tbody').empty();
+                    for (i = 0; i < Name.length; i++) {
+                        var html = templateHTML.replace(/{Image}/g, Image[i]).replace(/{Name}/g, Name[i]).replace(/{Price}/g, Price[i]).replace(/{Quantity}/g, Quantity[i]).replace(/{SumPrice}/g, SumPrice[i]);
+                        $('tbody').append(html);
+                    }
+                }
+                else { count--; }
+            },
+
+            error: function () {
+                alert("Error")
+            },
+
+            complete: function (response) {
+                //alert("complete")
+            },
+
+            failure: function (jqXHR, textStatus, errorThrown) {
+
+                alert("HTTP Status: " + jqXHR.status + "; Error Text: " + jqXHR.responseText);    //error message is displayed
+
+            }
+        })
+    }
+
+    function GetCart_Substract() {
+        if (count > 0) {
+            count = count - 1;
             $.ajax({
-                url: "/UserLog/GetUserCart",
+                url: "@Url.Action("GetUserCart", "UserLog")",
                 data: { skip: count, pageSize: defaultPageSize },
                 dataType: 'json',
                 //contentType: "application/json; charset=utf-8",
@@ -31,14 +89,11 @@
                     var Image = response.Image;
                     var SumPrice = response.SumPrice;
                     templateHTML = document.getElementById('rowTemplate').innerHTML;
-                    if (Name.length > 0) {
-                        $('tbody').empty();
-                        for (i = 0; i < Name.length; i++) {
-                            var html = templateHTML.replace(/{Image}/g, Image[i]).replace(/{Name}/g, Name[i]).replace(/{Price}/g, Price[i]).replace(/{Quantity}/g, Quantity[i]).replace(/{SumPrice}/g, SumPrice[i]);
-                            $('tbody').append(html);
-                        }
+                    $('tbody').empty();
+                    for (i = 0; i < Name.length; i++) {
+                        var html = templateHTML.replace(/{Image}/g, Image[i]).replace(/{Name}/g, Name[i]).replace(/{Price}/g, Price[i]).replace(/{Quantity}/g, Quantity[i]).replace(/{SumPrice}/g, SumPrice[i]);
+                        $('tbody').append(html);
                     }
-                    else { count--; }
                 },
 
                 error: function () {
@@ -56,54 +111,14 @@
                 }
             })
         }
-        function GetCart_Substract() {
-            if (count > 0) {
-                count = count - 1;
-                $.ajax({
-                    url: "/UserLog/GetUserCart",
-                    data: { skip: count, pageSize: defaultPageSize },
-                    dataType: 'json',
-                    //contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    success: function (response) {
-                        //countTemp = 0;
-                        var Name = response.Name;
-                        var Price = response.Price;
-                        var Quantity = response.Quantity;
-                        var Image = response.Image;
-                        var SumPrice = response.SumPrice;
-                        templateHTML = document.getElementById('rowTemplate').innerHTML;
-                        $('tbody').empty();
-                        for (i = 0; i < Name.length; i++) {
-                            /*var html = "<tr>" + "<td class='shoping__cart__item'>" + "<img src='/Images/" + Image[i] + "' alt='anh' style='height: 100px; width: 71px'>" + "<h5>" + Name[i] + "</h5>" + "</td>" + "<td class='shoping__cart__price'>" + "<span class='product-price'>" + Price[i] + "</span><span>đ</span>" + "</td>" + "<td class='shoping__cart__quantity'>" + Quantity[i] + "</td>" + "<td class='shoping__cart__total'><span class='total_price_of_product'><span class='sum-product-price'>" + SumPrice[i] + "</span></span><span>đ</span></td>" + "</tr>";*/
-                            var html = templateHTML.replace(/{Image}/g, Image[i]).replace(/{Name}/g, Name[i]).replace(/{Price}/g, Price[i]).replace(/{Quantity}/g, Quantity[i]).replace(/{SumPrice}/g, SumPrice[i]);
-                            $('tbody').append(html);
-                        }
-                    },
-
-                    error: function () {
-                        alert("Error")
-                    },
-
-                    complete: function (response) {
-                        //alert("complete")
-                    },
-
-                    failure: function (jqXHR, textStatus, errorThrown) {
-
-                        alert("HTTP Status: " + jqXHR.status + "; Error Text: " + jqXHR.responseText);    //error message is displayed
-
-                    }
-                })
-            }
-        }
-    </script>
-</head>
+        checkButton()
+    }
+</script>
 
 <script id="rowTemplate" type="text/html">
     <tr>
         <td class="shoping__cart__item">
-            <img src="/Images/{Image}" alt="{Name}" style="height:100px;width:71px">
+            <img src="@Url.Content("~/Images/{Image}")" alt="{Name}" style="height:100px;width:71px">
             <h5>{Name}</h5>
         </td>
         <td class="shoping__cart__price">
@@ -118,14 +133,14 @@
     </tr>
 </script>
 
-<section class="breadcrumb-section set-bg" data-setbg="/Assets/Client/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/Assets/Client/img/breadcrumb.jpg")">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     <h2>Nhà sách Phương Nam</h2>
                     <div class="breadcrumb__option">
-                        <a href="/">Home</a>
+                        <a href="@Url.Action("Index","Home")">Home</a>
                         <span>Xin chào @ViewBag.Name</span>
                     </div>
                 </div>
@@ -143,20 +158,20 @@
                         <h4>Danh mục</h4>
                         <ul>
                             <li>
-                                <a href="/myAccount" class="pl-3">Thông tin tài khoản</a>
+                                <a href="@Url.Action("Index","UserLog")" class="pl-3">Thông tin tài khoản</a>
                             </li>
                             <li>
-                                <a href="/myAccount/lich-su-mua-hang" class="text-white font-weight-bold pl-3" style="background-color: #7fad39">Lịch sử mua hàng</a>
+                                <a href="@Url.Action("History_Order","UserLog")" class="text-white font-weight-bold pl-3" style="background-color: #7fad39">Lịch sử mua hàng</a>
                             </li>
                             <li>
-                                <a href="/shopping-cart" class="pl-3">Đơn hàng của tôi</a>
+                                <a href="@Url.Action("Index","Orders")" class="pl-3">Đơn hàng của tôi</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-                @if (Model.Count>0)
+                @if (Model.Count > 0)
                 {
                     <div class="container">
                         <div class="row">
@@ -178,7 +193,7 @@
                                                 totalmoney += (Convert.ToInt32(item.Product.Price.GetValueOrDefault(0)) * item.Quantity);
                                                 <tr>
                                                     <td class="shoping__cart__item">
-                                                        <img src="~/Images/@item.Product.Image" alt="@item.Product.Name" style="height:100px;width:71px">
+                                                        <img src="@Url.Content(String.Format("~/Images/{0}",item.Product.Image))" alt="@item.Product.Name" style="height:100px;width:71px">
                                                         <h5>@item.Product.Name</h5>
                                                     </td>
                                                     <td class="shoping__cart__price">
@@ -196,8 +211,8 @@
                                         <tfoot>
                                             <tr class="py-4">
                                                 <td colspan="4" class="py-4">
-                                                    <button class="btn px-3 text-white" onclick="GetCart_Substract()" style="background-color: #7fad39"><i class="fas fa-caret-left" style="font-size:18px"></i></button>
-                                                    <button class="btn px-3 text-white" onclick="GetCart_Plus()" style="background-color: #7fad39"><i class="fas fa-caret-right" style="font-size:18px"></i></button>
+                                                    <button class="btn px-3 text-white" id="GetCart_Substract" onclick="GetCart_Substract()" style="background-color: #7fad39"><i class="fas fa-caret-left" style="font-size:18px"></i></button>
+                                                    <button class="btn px-3 text-white" id="GetCart_Plus" onclick="GetCart_Plus()" style="background-color: #7fad39"><i class="fas fa-caret-right" style="font-size:18px"></i></button>
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -208,12 +223,12 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 @*<div class="shoping__cart__btns">
-                                    <a href="/" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
-                                    <button class="primary-btn cart-btn cart-btn-right btn" id="btnUpdate">
-                                        <span class="icon_loading"></span>
-                                        Cập nhật giỏ hàng
-                                    </button>
-                                </div>*@
+                                        <a href="/" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
+                                        <button class="primary-btn cart-btn cart-btn-right btn" id="btnUpdate">
+                                            <span class="icon_loading"></span>
+                                            Cập nhật giỏ hàng
+                                        </button>
+                                    </div>*@
                             </div>
                             <div class="col-lg-6">
                                 <div class="shoping__continue">
@@ -243,7 +258,7 @@
                 {
                     <div class="alert alert-danger text-center text-danger font-weight-bold">
                         Bạn chưa mua sản phẩm nào &rarr;
-                        <a href="/">Bắt đầu mua hàng</a>
+                        <a href="@Url.Action("Index","Home")">Bắt đầu mua hàng</a>
                     </div>
                 }
             </div>
@@ -251,4 +266,7 @@
     </div>
 </section>
 
+<script>
+    checkButton()
+</script>
 

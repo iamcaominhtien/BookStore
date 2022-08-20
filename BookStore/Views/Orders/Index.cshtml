@@ -7,18 +7,120 @@
 }
 
 @section jsFooter{
-    <script src="~/Assets/Client/js/controller/cartController.js"></script>
+    @*Assets/Client/js/controller/cartController.js*@
+<script>
+        var cart = {
+            init: function () {
+                cart.regEvents();
+            },
+            regEvents: function () {
+                $("#btnContinue").off('click').on('click', function () {
+                    window.location.href = "@Url.Action("Index","Home")";
+                });
+
+                $("#btnUpdate").off('click').on('click', function () {
+                    var listProduct = $('.txtquantity');
+                    var cartList = [];
+                    $.each(listProduct, function (i, item) {
+                        cartList.push({
+                            Quantity: $(item).val(),
+                            Product: {
+                                ID: $(item).data('id')
+                            }
+                        });
+                    });
+
+                    $.ajax({
+                        url: '@Url.Action("Update", "Orders")',
+                        data: { cartModel: JSON.stringify(cartList) },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                newprice = $(".total_price_of_product");
+                                number_product = $(".txtquantity");
+                                count_number_product = 0;
+                                for (let i = 0; i < res.data.length - 1; i++) {
+                                    $(newprice[i]).html(res.data[i])
+                                }
+                                $("#checkout_product3").html(res.data[res.data.length - 1] + "đ")
+
+                                for (let i = 0; i < number_product.length; i++) {
+                                    count_number_product = count_number_product + parseInt($(number_product[i]).val());
+                                }
+                                $("#checkout_product2").html(count_number_product);
+                                $("#checkout_product1").html(number_product.length);
+                            }
+                        }
+                    })
+                });
+
+                $("#btnDeleteAll").off('click').on('click', function () {
+                    $.ajax({
+                        url: 'Cart/DeleteAll',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = '/shopping-cart';
+                            }
+                        }
+                    })
+                });
+
+                $(".icon_close").off('click').on('click', function (e) {
+                    a = this;
+                    e.preventDefault();
+                    $.ajax({
+                        data: { id: $(this).data('id') },
+                        url: '@Url.Action("DeleteItem", "Orders")',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                if (res.data != "0") {
+                                    a.parentElement.parentElement.remove();
+                                    newprice = $(".total_price_of_product");
+                                    number_product = $(".txtquantity");
+                                    count_number_product = 0;
+
+                                    //Dien checkout 3
+                                    $("#checkout_product3").html(res.data + "đ");
+
+                                    //Dien checkout 1 vs 2
+                                    for (let i = 0; i < number_product.length; i++) {
+                                        count_number_product = count_number_product + parseInt($(number_product[i]).val());
+                                    }
+                                    $("#checkout_product2").html(count_number_product);
+                                    $("#checkout_product1").html(number_product.length);
+                                }
+                                else {
+                                    window.location.href = "@Url.Action("Index","Orders")";
+                                }
+                            }
+                        }
+                    })
+                });
+
+                $("#btnPayment").off('click').on('click', function () {
+                    window.location.href = "@Url.Action("Index","Orders")";
+                });
+            }
+        }
+
+        cart.init();
+</script>
 }
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="/Assets/Client/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/Assets/Client/img/breadcrumb.jpg")">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     <h2>Shopping Cart</h2>
                     <div class="breadcrumb__option">
-                        <a href="/">Home</a>
+                        <a href="@Url.Action("Index","Home")">Home</a>
                         <span>Shopping Cart</span>
                     </div>
                 </div>
@@ -52,7 +154,7 @@
                                     totalmoney += (Convert.ToInt32(item.Product.Price.GetValueOrDefault(0))* item.Quantity);
                                     <tr>
                                         <td class="shoping__cart__item">
-                                            <img src="~/Images/@item.Product.Image" alt="@item.Product.Name" style="height:100px;width:71px">
+                                            <img src="@Url.Content(String.Format("~/Images/{0}",item.Product.Image))" alt="@item.Product.Name" style="height:100px;width:71px">
                                             <h5>@item.Product.Name</h5>
                                         </td>
                                         <td class="shoping__cart__price">
@@ -81,7 +183,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="/" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
+                        <a href="@Url.Action("Index","Home")" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
                         <button class="primary-btn cart-btn cart-btn-right btn" id="btnUpdate">
                             <span class="icon_loading"></span>
                             Cập nhật giỏ hàng
@@ -107,7 +209,7 @@
                             <li>Số lượng <span id="checkout_product2">@totalnumberproduct</span></li>
                             <li>Thành tiền <span id="checkout_product3">@totalmoney.ToString("N0")đ</span></li>
                         </ul>
-                        <a href="/checkout" class="primary-btn">PROCEED TO CHECKOUT</a>
+                        <a href="@Url.Action("Checkout","Orders")" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
                 </div>
             </div>
@@ -117,7 +219,7 @@
     {
         <div class="alert alert-danger text-center text-danger font-weight-bold">
             Chưa có sản phẩm nào trong giỏ hàng &rarr;
-            <a href="/">Bắt đầu mua hàng</a>
+            <a href="@Url.Action("Index","Home")">Bắt đầu mua hàng</a>
         </div>
     }
 </section>

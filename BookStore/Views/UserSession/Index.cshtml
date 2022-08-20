@@ -11,10 +11,10 @@
     <title>Sign Up Form by Colorlib</title>
 
     <!-- Font Icon -->
-    <link rel="stylesheet" href="~/Assets/Client/usersession/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="@Url.Content("~/Assets/Client/usersession/fonts/material-icon/css/material-design-iconic-font.min.css")">
     <!-- Main css -->
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/Assets/Client/usersession/css/style.css">
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="@Url.Content("~/Assets/Client/usersession/css/style.css")">
 </head>
 <body>
     <!-- Sign up form -->
@@ -50,7 +50,7 @@
                     </form>
                 </div>
                 <div class="signup-image">
-                    <figure><img src="~/Assets/Client/usersession/images/signup-image.jpg" alt="sing up image"></figure>
+                    <figure><img src="@Url.Content("~/Assets/Client/usersession/images/signup-image.jpg")" alt="sing up image"></figure>
                     <a href="#" class="signup-image-link" onclick="userToggle()">I am already member</a>
                 </div>
             </div>
@@ -62,7 +62,7 @@
         <div class="container my-auto">
             <div class="signin-content">
                 <div class="signin-image">
-                    <figure><img src="~/Assets/Client/usersession/images/signin-image.jpg" alt="sing up image"></figure>
+                    <figure><img src="@Url.Content("~/Assets/Client/usersession/images/signin-image.jpg")" alt="sing up image"></figure>
                     <a class="signup-image-link" href="#" onclick="userToggle()" di>Create an account</a>
                 </div>
                 <div class="signin-form">
@@ -98,8 +98,8 @@
     </section>
 
     <!-- JS -->
-    <script src="~/Assets/Client/usersession/vendor/jquery/jquery.min.js"></script>
-    <script src="~/Assets/Client/usersession/js/main.js"></script>
+    <script src="@Url.Content("~/Assets/Client/usersession/vendor/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Assets/Client/usersession/js/main.js")"></script>
     <script>
         function userToggle() {
             var a = document.getElementById("user_signup");

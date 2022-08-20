@@ -5,14 +5,14 @@
     Layout = "~/Views/Shared/_LayoutClient.cshtml";
 }
 
-<section class="breadcrumb-section set-bg" data-setbg="/Assets/Client/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/Assets/Client/img/breadcrumb.jpg")">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     <h2>Nhà sách Phương Nam</h2>
                     <div class="breadcrumb__option">
-                        <a href="/">Home</a>
+                        <a href="@Url.Action("Index","Home")">Home</a>
                         <span>Xin chào @ViewBag.Name</span>
                     </div>
                 </div>
@@ -30,13 +30,13 @@
                         <h4>Danh mục</h4>
                         <ul>
                             <li>
-                                <a href="/myAccount" class="text-white font-weight-bold pl-3" style="background-color: #7fad39">Thông tin tài khoản</a>
+                                <a href="@Url.Action("Index","UserLog")" class="pl-3 text-white font-weight-bold " style="background-color: #7fad39">Thông tin tài khoản</a>
                             </li>
                             <li>
-                                <a href="/myAccount/lich-su-mua-hang" class="pl-3">Lịch sử mua hàng</a>
+                                <a href="@Url.Action("History_Order","UserLog")" class="pl-3">Lịch sử mua hàng</a>
                             </li>
                             <li>
-                                <a href="/shopping-cart" class="pl-3">Đơn hàng của tôi</a>
+                                <a href="@Url.Action("Index","Orders")" class="pl-3">Đơn hàng của tôi</a>
                             </li>
                         </ul>
                     </div>
@@ -95,7 +95,7 @@
 
                     <div class="form-group col-12 d-flex justify-content-center">
                         <input class="d-block mx-auto btn font-weight-bold text-white px-4 py-2 mt-2" type="submit" value="Cập nhật" style="background-color: #7fad39" />
-                        <a href="/UserLog/DeleteConfirmed/@Model.ID" class="d-block mx-auto btn font-weight-bold text-white px-4 py-2 mt-2" value="Xóa" style="background-color: #7fad39">Xóa</a>
+                        <a href="@Url.Action("DeleteConfirmed", "UserLog", new {id= Model.ID })" class="d-block mx-auto btn font-weight-bold text-white px-4 py-2 mt-2" value="Xóa" style="background-color: #7fad39">Xóa</a>
                     </div>
                 </div>
                 }

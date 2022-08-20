@@ -20,11 +20,16 @@ namespace BookStore.Controllers
         public decimal Price { get => price; set => price = value; }
         public int Quantity { get => quantity; set => quantity = value; }
     }
+
+    [RoutePrefix("thong-tin-nguoi-dung")]
     public class UserLogController : CheckSessionController
     {
         private BookStoreEntities db = new BookStoreEntities();
         public static string OldPass = "";
         // GET: UserLog
+
+        [Route("")]
+        [Route("trang-chu")]
         public ActionResult Index()
         {
             var usersession = (UserLogin)Session[CommonConstant.USER_SESSION];
@@ -35,6 +40,8 @@ namespace BookStore.Controllers
         }
 
         [HttpPost]
+        [Route("")]
+        [Route("trang-chu")]
         public ActionResult Index([Bind(Include = "ID,UserName,Password,Name,Address,Email,Phone,CreatedDate,Status")] User user)
         {
             ViewBag.Name = user.Name;
@@ -61,6 +68,7 @@ namespace BookStore.Controllers
             return RedirectToAction("Index","Home");
         }
 
+        [Route("lich-su-mua-hang")]
         public ActionResult History_Order()
         {
             var usersession = (UserLogin)Session[CommonConstant.USER_SESSION];

@@ -7,7 +7,7 @@
             minLength: 0,
             source: function (request, response) {
                 $.ajax({
-                    url: "/ManageProduct/ListName",
+                    url: "ManageProduct/ListName",
                     dataType: "json",
                     data: {
                         term: request.term

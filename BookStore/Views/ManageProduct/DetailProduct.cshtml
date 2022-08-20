@@ -5,26 +5,26 @@
 }
 
 <head>
-    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.js")"></script>
     <script>
         $("#Pages_menu").addClass("active");
         function changeAction() {
-            var action = '/them-gio-hang?productID=@Model.ID&quantity=' + document.getElementById("quantity_product").value;
+            var action = '@Url.Action("AddItem", "Orders", new { productID = Model.ID})'+'&quantity=' + document.getElementById("quantity_product").value;
             document.getElementById("form_action").setAttribute("action", action)
         }
     </script>
 </head>
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="/Assets/Client/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/Assets/Client/img/breadcrumb.jpg")">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     <h2>Nhà sách Phương Nam</h2>
                     <div class="breadcrumb__option">
-                        <a href="/">Home</a>
-                        <a href="/san-pham/@ViewBag.ProductCategory.MetaTitle-@ViewBag.ProductCategory.ID">@ViewBag.ProductCategory.Name</a>
+                        <a href="">Home</a>
+                        <a href="@Url.Action("Index", "ListProductByCategory", new { cateid= ViewBag.ProductCategory.ID })">@ViewBag.ProductCategory.Name</a>
                         <span>@Model.Name</span>
                     </div>
                 </div>
@@ -41,18 +41,8 @@
                 <div class="product__details__pic">
                     <div class="product__details__pic__item">
                         <img class="product__details__pic__item--large"
-                             src="~/Images/@Model.Image" alt="@Model.Name">
+                             src="@Url.Content(String.Format("~/Images/{0}",Model.Image))" alt="@Model.Name">
                     </div>
-                    @*<div class="product__details__pic__slider owl-carousel">
-                            <img data-imgbigurl="/Assets/Client/img/product/details/product-details-2.jpg"
-                                 src="/Assets/Client/img/product/details/thumb-1.jpg" alt="">
-                            <img data-imgbigurl="/Assets/Client/img/product/details/product-details-3.jpg"
-                                 src="/Assets/Client/img/product/details/thumb-2.jpg" alt="">
-                            <img data-imgbigurl="/Assets/Client/img/product/details/product-details-5.jpg"
-                                 src="/Assets/Client/img/product/details/thumb-3.jpg" alt="">
-                            <img data-imgbigurl="/Assets/Client/img/product/details/product-details-4.jpg"
-                                 src="/Assets/Client/img/product/details/thumb-4.jpg" alt="">
-                        </div>*@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -62,17 +52,8 @@
                     <p class="text-justify">
                         @Html.Raw(Model.Description)
                     </p>
-                    @*<div class="product__details__quantity">
-                        <div class="quantity">
-                            <div class="pro-qty">
-                                <input type="text" value="1">
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/them-gio-hang?productID=@Model.ID&quantity=1" class="primary-btn">Thêm vào giỏ hàng</a>
-                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>*@
-
-                    <form action="/them-gio-hang?productID=@Model.ID&quantity=1" method="post" id="form_action">
+                    
+                    <form action="@Url.Action("AddItem", "Orders", new { productID = Model.ID, quantity = 1 })" method="post" id="form_action">
                         <div class="product__details__quantity">
                             <div class="quantity">
                                 <div class="pro-qty" style="display:inline-block !important">
@@ -81,19 +62,9 @@
                             </div>
                         </div>
                         <button onclick="changeAction()" class="btn primary-btn" id="addToCart">Thêm vào giỏ hàng</button>
-                        @*<a href="/them-gio-hang?productID=@Model.ID&quantity=1" class="primary-btn">Thêm vào giỏ hàng</a>*@
-                        @*<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>*@
-                        @*<script>
-                            $('#addToCart').on('click', function () {
-                                alert("hello")
-                            })
-                        </script>*@
                     </form>
 
                     <ul>
-                        @*<li><b>Availability</b> <span>In Stock</span></li>
-                            <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
-                            <li><b>Weight</b> <span>0.5 kg</span></li>*@
                         <li>
                             <b>Share on</b>
                             <div class="share">
@@ -108,21 +79,6 @@
             </div>
             <div class="col-lg-12">
                 <div class="product__details__tab">
-                    @*<ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
-                                   aria-selected="true">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
-                                   aria-selected="false">Information</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                   aria-selected="false">Reviews <span>(1)</span></a>
-                            </li>
-                        </ul>*@
-
                     @if (Model.Detail != null)
                     {
                         <div class="tab-content">
@@ -134,49 +90,6 @@
                                     </p>
                                 </div>
                             </div>
-                            @*<div class="tab-pane" id="tabs-2" role="tabpanel">
-                                    <div class="product__details__tab__desc">
-                                        <h6>Products Infomation</h6>
-                                        <p>
-                                            Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-                                            Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
-                                            Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
-                                            sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
-                                            eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
-                                            Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-                                            sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
-                                            diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-                                            ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                                            Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
-                                            Proin eget tortor risus.
-                                        </p>
-                                        <p>
-                                            Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
-                                            ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
-                                            elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
-                                            porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
-                                            nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                    <div class="product__details__tab__desc">
-                                        <h6>Products Infomation</h6>
-                                        <p>
-                                            Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-                                            Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
-                                            Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
-                                            sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
-                                            eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
-                                            Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-                                            sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
-                                            diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-                                            ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                                            Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
-                                            Proin eget tortor risus.
-                                        </p>
-                                    </div>
-                                </div>*@
                         </div>
                     }
                 </div>
@@ -200,15 +113,15 @@
             {
                 <div class="col-lg-3 col-md-4 col-sm-6 mx-auto">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="/Images/@item.Image" style="background-size:262.5px 270px;height:270px !important">
+                        <div class="product__item__pic set-bg" data-setbg="@Url.Content(String.Format("~/Images/{0}",item.Image))" style="background-size:262.5px 270px;height:270px !important">
                             <ul class="product__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a href="@Url.Action("AddItem", "Orders", new { productID = item.ID, quantity = 1 })"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">
-                            <h6><a href="/chi-tiet/@item.MetaTitle-@item.ID">@item.Name</a></h6>
+                            <h6><a href="@Url.Action("DetailProduct", "ManageProduct", new { cateid= item.ID })">@item.Name</a></h6>
                             <h5>@item.Price.ToString("N0")<span>đ</span></h5>
                         </div>
                     </div>

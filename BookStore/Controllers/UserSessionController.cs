@@ -69,8 +69,6 @@ namespace BookStore.Controllers
 
         public ActionResult Login()
         {
-            //if (ReturnUrl== "/")
-            //    ReturnUrl = Request.UrlReferrer.ToString();
             return View();
         }
 
@@ -134,11 +132,13 @@ namespace BookStore.Controllers
                     {
                         var url = ReturnUrl;
                         ReturnUrl = "/";
+                        if (url == "/")
+                            return RedirectToAction("Index", "Home");
                         return Redirect(url);
                     }
                     catch
                     {
-                        return Redirect("/");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else if (result == 0)
@@ -160,55 +160,11 @@ namespace BookStore.Controllers
 
         public ActionResult Logout()
         {
-            //try
-            //{
-            //    List<CartItem> list = (List<CartItem>)Session[CommonConstant.CartSession];
-            //    UserLogin user = (UserLogin)Session[CommonConstant.USER_SESSION];
-            //    long id;
-
-            //    if (list[0].OrderID == -1)
-            //    {
-            //        var order = new Cart();
-            //        order.CreatedDate = DateTime.Now;
-            //        order.CustomerID = user.UserID;
-            //        order.Status = true;
-            //        db.Carts.Add(order);
-            //        db.SaveChanges();
-            //        id = order.ID;
-            //    }
-            //    else
-            //    {
-            //        id = list[0].OrderID;
-            //    }
-
-            //    foreach (var item in list)
-            //    {
-            //        var orderdetail = new CartDetail();
-            //        orderdetail.ProductID = item.Product.ID;
-            //        orderdetail.OrderID = id;
-            //        orderdetail.Price = item.Product.Price;
-            //        orderdetail.Quantity = item.Quantity;
-
-            //        var test = db.CartDetails.Where(x => x.ProductID == item.Product.ID && x.OrderID == id);
-            //        if (test.Any())
-            //        {
-            //            db.Entry(orderdetail).State = EntityState.Modified;
-            //            db.SaveChanges();
-            //        }
-            //        else
-            //        {
-            //            db.CartDetails.Add(orderdetail);
-            //            db.SaveChanges();
-            //        }
-            //    }
-            //}
-            //catch { }
-
             Session[Common.CommonConstant.USER_SESSION] = null;
             Session[Common.CommonConstant.CartSession] = null;
             Session.Timeout = 25;
             OrdersController.StatusInitial = false;
-            return Redirect("/");
+            return RedirectToAction("Login");
         }
     }
 }
