@@ -8,13 +8,13 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/Assets/Admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="@Url.Content("~/Assets/Admin/plugins/fontawesome-free/css/all.min.css")">
     <!-- Theme style -->
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/Assets/Admin/dist/css/adminlte.min.css">
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
-    <link href="~/Assets/fontawesome/css/all.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="@Url.Content("~/Assets/Admin/dist/css/adminlte.min.css")"/>
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Assets/fontawesome/css/all.css")" rel="stylesheet" />
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse">
     <!-- Site wrapper -->
@@ -27,7 +27,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/admin" class="nav-link">Home</a>
+                    <a href="@Url.Action("ManagerHome", "Managers", new {area="admin"})" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
@@ -36,7 +36,7 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="/admin/dang-xuat">Logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="@Url.Action("Logout", "Login", new {area="admin"})">Logout</a></li>
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -95,16 +95,17 @@
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
-    <script src="~/Assets/Admin/plugins/jquery/jquery.min.js"></script>
+    <script src="@Url.Content("~/Assets/Admin/plugins/jquery/jquery.min.js")"></script>
     <!-- Bootstrap 4 -->
-    <script src="~/Assets/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="@Url.Content("~/Assets/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js")"></script>
     <!-- AdminLTE App -->
-    <script src="~/Assets/Admin/dist/js/adminlte.min.js"></script>
+    <script src="@Url.Content("~/Assets/Admin/dist/js/adminlte.min.js")"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="~/Assets/Admin/dist/js/demo.js"></script>
-    <script src="~/Assets/Admin/ckeditor/ckeditor.js"></script>
+    <script src="@Url.Content("~/Assets/Admin/dist/js/demo.js")"></script>
+    <script src="@Url.Content("~/Assets/Admin/ckeditor/ckeditor.js")"></script>
     @RenderSection("jsFooter", required: false)
-    <script>$("#AlertBox").removeClass("hide");
+    <script>
+    $("#AlertBox").removeClass("hide");
         $("#AlertBox").delay(1000).slideUp(500);</script>
 </body>
 </html>

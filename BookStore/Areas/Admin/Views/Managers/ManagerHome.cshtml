@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @{ Html.RenderAction("ChartNewRegister", "Managers");}
+                        @{ Html.RenderAction("ChartNewRegister", "Managers", new {area="admin"});}
                         <div class="d-flex flex-row justify-content-end">
                             <span class="mr-2">
                                 <i class="fas fa-square" style="color:red"></i> Tuần này
@@ -113,7 +113,7 @@
                                 {
                                     <tr>
                                         <td>
-                                            <img src="~/Images/@item.Image" alt="@item.Name" class="img-size-32 mr-2">
+                                            <img src="@Url.Content(String.Format("~/Images/{0}",item.Image))" alt="@item.Name" class="img-size-32 mr-2">
                                             @item.Name
                                         </td>
                                         <td>@item.Price.ToString("N0")<span>đ</span></td>
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @{ Html.RenderAction("SalesChart", "Managers");}
+                        @{ Html.RenderAction("SalesChart", "Managers", new {area="admin"});}
                         <div class="d-flex flex-row justify-content-end">
                             <span class="mr-2">
                                 <i class="fas fa-square text-primary"></i> Tuần này

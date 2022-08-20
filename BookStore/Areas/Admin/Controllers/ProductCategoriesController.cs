@@ -11,12 +11,16 @@ using BookStore.Common;
 
 namespace BookStore.Areas.Admin.Controllers
 {
+    [RouteArea("admin", AreaPrefix = "quan-tri-vien")]
+    [RoutePrefix("quan-li-the-loai-sach")]
     public class ProductCategoriesController : Controller
     {
         private BookStoreEntities db = new BookStoreEntities();
 
         // GET: Admin/ProductCategories
         [CheckRole(RoleID = "VIEW")]
+        [Route("",Order=1)]
+        [Route("danh-sach-cac-the-loai")]
         public ActionResult Index()
         {
             return View(db.ProductCategories.OrderByDescending(p=>p.CreatedDate).ToList());
@@ -24,6 +28,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         [CheckRole(RoleID = "VIEW")]
         [HttpPost]
+        [Route("danh-sach-cac-the-loai")]
         public ActionResult Index(string searchString, string status="")
         {
             string search = "SEARCH_PRODUCT_CATEGORY N'" + searchString + "','" + status + "'";
@@ -34,6 +39,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/ProductCategories/Details/5
         [CheckRole(RoleID = "VIEW")]
+        [Route("chi-tiet-the-loai-{id:long?}")]
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -50,6 +56,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/ProductCategories/Create
         [CheckRole(RoleID = "CREATE")]
+        [Route("them-the-loai-sach")]
         public ActionResult Create()
         {
             ViewBag.Count = db.ProductCategories.Count() + 1;
@@ -62,6 +69,7 @@ namespace BookStore.Areas.Admin.Controllers
         [CheckRole(RoleID = "CREATE")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("them-the-loai-sach")]
         public ActionResult Create([Bind(Include = "ID,Name,Image,MetaTitle,DisplayOrder,CreatedDate,CreatedBy,Status")] ProductCategory productCategory)
         {
             var img = Request.Files["Image"];
@@ -84,6 +92,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/ProductCategories/Edit/5
         [CheckRole(RoleID = "EDIT")]
+        [Route("cap-nhat-the-loai-sach")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -104,6 +113,7 @@ namespace BookStore.Areas.Admin.Controllers
         [CheckRole(RoleID = "EDIT")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("cap-nhat-the-loai-sach")]
         public ActionResult Edit([Bind(Include = "ID,Name,Image,MetaTitle,DisplayOrder,CreatedDate,CreatedBy,Status")] ProductCategory productCategory)
         {
             var img = Request.Files["Image"];
@@ -130,6 +140,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/ProductCategories/Delete/5
         [CheckRole(RoleID = "DELETE")]
+        [Route("xoa-the-loai-sach-{id:long?}")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -148,6 +159,7 @@ namespace BookStore.Areas.Admin.Controllers
         [CheckRole(RoleID = "DELETE")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Route("xoa-the-loai-sach-{id:long?}")]
         public ActionResult DeleteConfirmed(long id)
         {
             ProductCategory productCategory = db.ProductCategories.Find(id);

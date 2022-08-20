@@ -12,8 +12,8 @@
 }
 
 @section jsFooter{
-    <script src="~/Assets/Admin/js/controller/managerController.js"></script>
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="@Url.Content("~/Assets/Admin/js/controller/managerController.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")"></script>
     <script type="text/javascript">
         $(function () {
             $('th a, tfoot tr td a').on('click', function () {
@@ -128,10 +128,10 @@ grid.Column("Name","Khách hàng"),
 grid.Column("Status","Trạng thái",format:@<text>@(item.Status==true?"Chưa thanh toán":"Đã thanh toán")</text>),
 grid.Column("Chức năng", format:
 @<text>
-    <a href="@Url.Action("Details", new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Xem chi tiết"><img src="/images/details.png" width="20" height="20" /></abbr></a>
-    <a href="/admin/quan-li-don-hang/DeleteConfirmed/@item.ID" class="edit-btn">
+    <a href="@Url.Action("Details", new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Xem chi tiết"><img src="@Url.Content("~/images/details.png")" width="20" height="20" /></abbr></a>
+    <a href="@Url.Action("DeleteConfirmed","Carts",new{id=item.ID,area="admin"})" class="edit-btn">
         <abbr title="Xóa dữ liệu">
-            <img src="/images/delete.png" width="20" height="20" />
+            <img src="@Url.Content("~/images/delete.png")" width="20" height="20" />
         </abbr>
     </a>
 </text>

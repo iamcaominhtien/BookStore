@@ -12,15 +12,16 @@ using BookStore.Models;
 
 namespace BookStore.Areas.Admin.Controllers
 {
-    [RouteArea("admin")]
-    [RoutePrefix("quan-li-don-hang")]
-    [Route("{action=index}/{id?}")]
+    [RouteArea("admin", AreaPrefix = "quan-tri-vien")]
+    [RoutePrefix("quan-li-dat-hang")]
     public class CartsController : BasicController
     {
         private BookStoreEntities db = new BookStoreEntities();
 
         // GET: Admin/Carts
         [CheckRole(RoleID = "EDIT")]
+        [Route("danh-sach-don-dat-hang",Order =0)]
+        [Route("", Order = 1)]
         public ActionResult Index()
         {
             string search = "Search_Cart N'" + "','" + "','" + "','" + "'";
@@ -30,6 +31,8 @@ namespace BookStore.Areas.Admin.Controllers
 
         [HttpPost]
         [CheckRole(RoleID = "EDIT")]
+        [Route("danh-sach-don-dat-hang", Order = 0)]
+        [Route("", Order = 1)]
         public ActionResult Index(string name_admin="", string status="", string fromDate="", string toDate="")
         {
             string search = "Search_Cart N'" + name_admin + "','" + status + "','" + fromDate + "','" + toDate + "'";
@@ -38,6 +41,7 @@ namespace BookStore.Areas.Admin.Controllers
         }
 
         [CheckRole(RoleID = "EDIT")]
+        [Route("chi-tiet-don-hang-{id:long?}")]
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -50,16 +54,6 @@ namespace BookStore.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            //var getUserCart = from a in db.Carts
-            //                 join b in db.CartDetails on a.ID equals b.OrderID
-            //                 //where (a.CustomerID == cart.CustomerID)
-            //                 where (a.ID==id)
-            //                 select new
-            //                 {
-            //                     OrderID = b.OrderID,
-            //                     ProductID = b.ProductID,
-            //                     Quantity = b.Quantity
-            //                 };
             var getUserCart = db.Database.SqlQuery<UserCart>("exec GetUserCart_ByCartID " + id.ToString());
 
             var list = new List<CartItem>();
@@ -75,7 +69,6 @@ namespace BookStore.Areas.Admin.Controllers
                         OrderID = (int)id
                     });
                 }
-                //Session[CommonConstant.CartSession] = list;
             }
 
             ViewBag.CartDetail = list;
@@ -84,6 +77,7 @@ namespace BookStore.Areas.Admin.Controllers
         }
 
         [CheckRole(RoleID = "EDIT")]
+        [Route("xoa-nhom-{id:long}")]
         public ActionResult DeleteConfirmed(long id)
         {
             Cart cart = db.Carts.Find(id);

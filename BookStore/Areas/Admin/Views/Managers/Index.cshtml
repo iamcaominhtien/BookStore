@@ -11,8 +11,8 @@
 }
 
 @section jsFooter{
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <script src="~/Assets/Admin/js/controller/managerController.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")"></script>
+    <script src="@Url.Content("~/Assets/Admin/js/controller/managerController.js")"></script>
     <script type="text/javascript">
         $(function () {
             $('th a, tfoot tr td a').on('click', function () {
@@ -124,13 +124,13 @@
                             grid.Column("Status","Status",format: @<text><a href="#" data-id="@item.Id" class="btn-active">@(item.Status?"Kích hoạt":"Khóa")</a></text>),
 grid.Column("Chức năng", format: @<text>
                                 <a href="@Url.Action("Edit",
-                                        new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Cập nhật dữ liệu"><img src="/images/edit.png" width="20" height="20" /></abbr></a>
+                                        new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Cập nhật dữ liệu"><img src="@Url.Content("~/images/edit.png")" width="20" height="20" /></abbr></a>
                                 <a href="@Url.Action("Details",
-                                        new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Xem chi tiết"><img src="/images/details.png" width="20" height="20" /></abbr></a>
+                                        new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Xem chi tiết"><img src="@Url.Content("~/images/details.png")" width="20" height="20" /></abbr></a>
                                 <a href="@Url.Action("Delete",
                                         new { id = item.ID.ToString().Trim()})" class="edit-btn">
                                     <abbr title="Xóa dữ liệu">
-                                        <img src="/images/delete.png" width="20" height="20" />
+                                        <img src="@Url.Content("~/images/delete.png")" width="20" height="20" />
                                     </abbr>
                                 </a>
 </text>),

@@ -11,7 +11,38 @@
 }
 
 @section jsFooter{
-    <script src="~/Assets/Admin/js/controller/managerController.js"></script>
+    @*<script src="@Url.Content("~/Assets/Admin/js/controller/managerController.js")"></script>*@
+<script>
+        var manager = {
+            init: function () {
+                manager.registerEvents();
+            },
+            registerEvents: function () {
+                $('.btn-active').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    var btn = $(this);
+                    var id = btn.data('id');
+                    $.ajax({
+                        url: "@Url.Action("ChangeStatus", "Managers", new { area = "admin" })",
+                        /*url: '/Admin/Managers/ChangeStatus',*/
+                        data: { id: id },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (response) {
+                            if (response.status == true) {
+                                btn.text('Kích hoạt');
+                            }
+                            else {
+                                btn.text('Khóa');
+                            }
+                        }
+                    })
+                })
+            }
+        }
+
+        manager.init();
+</script>
 }
 
 @using (Html.BeginForm())
@@ -120,11 +151,11 @@
 grid.Column("Status","Status",format:@<text>@(item.Status==true?"Hiện":"Ẩn")</text>),
 grid.Column("Chức năng", format: @<text>
     <a href="@Url.Action("Edit",
-                                                new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Cập nhật dữ liệu"><img src="/images/edit.png" width="20" height="20" /></abbr></a>
+                                                new { id = item.ID.ToString().Trim()})" class="edit-btn"><abbr title="Cập nhật dữ liệu"><img src="@Url.Content("~/images/edit.png")" width="20" height="20" /></abbr></a>
     <a href="@Url.Action("Delete",
                                                 new { id = item.ID.ToString().Trim()})" class="edit-btn">
         <abbr title="Xóa dữ liệu">
-            <img src="/images/delete.png" width="20" height="20" />
+            <img src="@Url.Content("~/images/delete.png")" width="20" height="20" />
         </abbr>
     </a>
 </text>),

@@ -11,6 +11,8 @@ using BookStore.Common;
 
 namespace BookStore.Areas.Admin.Controllers
 {
+    [RouteArea("admin", AreaPrefix = "quan-tri-vien")]
+    [RoutePrefix("quan-li-nhom-quan-tri")]
     public class ManagerGroupsController : BasicController
     {
         private BookStoreEntities db = new BookStoreEntities();
@@ -18,6 +20,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/ManagerGroups
         [CheckRole(RoleID = "VIEW")]
+        [Route("danh-sach-quan-tri-vien")]
         public ActionResult Index()
         {
             return View(db.ManagerGroups.ToList());
@@ -25,6 +28,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         [CheckRole(RoleID = "VIEW")]
         [HttpPost]
+        [Route("danh-sach-quan-tri-vien")]
         public ActionResult Index(string searchString, string status, string fromDate, string toDate)
         {
             string search = "Search_ManagerGroup'" + searchString + "','" + status + "','" + fromDate + "','" + toDate + "'";
@@ -34,6 +38,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/ManagerGroups/Create
         [CheckRole(RoleID = "CREATE")]
+        [Route("them-nhom-moi")]
         public ActionResult Create()
         {
             return View();
@@ -45,6 +50,7 @@ namespace BookStore.Areas.Admin.Controllers
         [CheckRole(RoleID = "CREATE")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("them-nhom-moi")]
         public ActionResult Create([Bind(Include = "ID,Name,Note,CreatedDate,Status")] ManagerGroup managerGroup)
         {
             if (ModelState.IsValid)
@@ -60,6 +66,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/ManagerGroups/Edit/5
         [CheckRole(RoleID = "EDIT")]
+        [Route("cap-nhat-thong-tin-nhom")]
         public ActionResult Edit(long? id)
         {
             returnUrl = Request.UrlReferrer.ToString();
@@ -82,6 +89,7 @@ namespace BookStore.Areas.Admin.Controllers
         [CheckRole(RoleID = "EDIT")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("cap-nhat-thong-tin-nhom")]
         public ActionResult Edit([Bind(Include = "ID,Name,Note,CreatedDate,Status")] ManagerGroup managerGroup)
         {
             if (ModelState.IsValid)
@@ -95,6 +103,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/ManagerGroups/Delete/5
         [CheckRole(RoleID = "DELETE")]
+        [Route("xoa-nhom-quan-tri-{id:long?}")]
         public ActionResult Delete(long? id)
         {
             returnUrl = Request.UrlReferrer.ToString();
@@ -114,6 +123,7 @@ namespace BookStore.Areas.Admin.Controllers
         [CheckRole(RoleID = "DELETE")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Route("xoa-nhom-quan-tri-{id:long?}")]
         public ActionResult DeleteConfirmed(long id)
         {
             ManagerGroup managerGroup = db.ManagerGroups.Find(id);

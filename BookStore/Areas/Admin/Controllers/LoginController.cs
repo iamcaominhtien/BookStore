@@ -8,7 +8,8 @@ using System.Web.Mvc;
 
 namespace BookStore.Areas.Admin.Controllers
 {
-    [RouteArea("admin")]
+    [RouteArea("admin", AreaPrefix = "quan-tri-vien")]
+    [RoutePrefix("quan-li-phien")]
     public class LoginController : Controller
     {
         private BookStoreEntities db = new BookStoreEntities();

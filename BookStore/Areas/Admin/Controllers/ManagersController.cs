@@ -11,7 +11,8 @@ using BookStore.Common;
 
 namespace BookStore.Areas.Admin.Controllers
 {
-    [RouteArea("admin")]
+    [RouteArea("admin", AreaPrefix = "quan-tri-vien")]
+    [RoutePrefix("quan-li-quan-tri-vien")]
     public class ManagersController : BasicController
     {
         private BookStoreEntities db = new BookStoreEntities();
@@ -95,9 +96,8 @@ namespace BookStore.Areas.Admin.Controllers
         }
 
         //[CheckRole(RoleID = "VIEW")]
-        [Route("")]
-        [Route("home")]
-        [Route("home/index")]
+        [Route("",Order=1)]
+        [Route("trang-chu",Order=0)]
         public ActionResult ManagerHome()
         {
             //Các sản phẩm bán chạy trong tuần
@@ -106,6 +106,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View();
         }
 
+        [Route("danh-sach-quan-tri-vien")]
         [CheckRole(RoleID = "EDIT")]
         // GET: Admin/Managers
         [CheckRole(RoleID = "VIEW")]
@@ -119,6 +120,7 @@ namespace BookStore.Areas.Admin.Controllers
         }
 
         // GET: Admin/Managers/Details/5
+        [Route("chi-tiet-quan-tri-vien-{id:long?}")]
         [CheckRole(RoleID = "VIEW")]
         public ActionResult Details(long? id)
         {
@@ -136,6 +138,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/Managers/Create
         [CheckRole(RoleID = "CREATE")]
+        [Route("them-moi-quan-tri-vien")]
         public ActionResult Create()
         {
             ViewBag.GroupID = new SelectList(db.ManagerGroups, "ID", "Name");
@@ -148,6 +151,7 @@ namespace BookStore.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CheckRole(RoleID = "CREATE")]
+        [Route("them-moi-quan-tri-vien")]
         public ActionResult Create([Bind(Include = "ID,SirName,FirstName,UserName,Password,Status,GroupID")] Manager manager)
         {
             if (ModelState.IsValid)
@@ -163,6 +167,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/Managers/Edit/5
         [CheckRole(RoleID = "EDIT")]
+        [Route("cap-nhat-quan-tri-vien{id:long?}")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -185,6 +190,7 @@ namespace BookStore.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CheckRole(RoleID = "EDIT")]
+        [Route("cap-nhat-quan-tri-vien{id:long?}")]
         public ActionResult Edit([Bind(Include = "ID,SirName,FirstName,UserName,Password,Status,GroupID")] Manager manager)
         {
             if (ModelState.IsValid)
@@ -202,6 +208,7 @@ namespace BookStore.Areas.Admin.Controllers
 
         // GET: Admin/Managers/Delete/5
         [CheckRole(RoleID = "DELETE")]
+        [Route("xoa-quan-tri-vien")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -220,6 +227,7 @@ namespace BookStore.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [CheckRole(RoleID = "DELETE")]
+        [Route("xoa-quan-tri-vien")]
         public ActionResult DeleteConfirmed(long id)
         {
             Manager manager = db.Managers.Find(id);

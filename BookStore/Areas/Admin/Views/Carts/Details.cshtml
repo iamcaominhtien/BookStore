@@ -78,7 +78,7 @@
 
 <p>
     <div class="form-actions no-color">
-        <a href="/Admin/Carts/DeleteConfirmed/@Model.ID" class="btn btn-default">Xóa</a> |
+        <a href="@Url.Action("DeleteConfirmed", "Carts", new { id = Model.ID, area = "admin" })" class="btn btn-default">Xóa</a> |
         @Html.ActionLink("Quay lại trang danh sách hóa đơn", "Index")
     </div>
 </p>
