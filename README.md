@@ -7,6 +7,6 @@ Truy cập trang (link để ở phần About): https://bsite.net/aspnetmvc/tran
 <br/>Truy cập trang admin qua đường link sau: https://bsite.net/aspnetmvc/quan-tri-vien/quan-li-quan-tri-vien/trang-chu
 <br/>Tài khoản (chỉ xem thui nhe :3)
 <pre>
-    <br/>User name: ltquang
-    <br/>Password: 1234567
+    <strong>User name:</strong> ltquang
+    <br/><strong>Password</strong>: 1234567
 </pre>
