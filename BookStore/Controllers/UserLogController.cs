@@ -54,7 +54,7 @@ namespace BookStore.Controllers
                 db.SaveChanges();
                 return View();
             }
-            return View();
+            return View(user);
         }
 
         public ActionResult DeleteConfirmed(long id)
