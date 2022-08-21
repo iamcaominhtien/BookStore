@@ -50,11 +50,26 @@
             event.preventDefault()
             value = document.getElementById("txtKeyword").value
             keysearch = ''
-            for (let i of value) {
-                if (i != ' ') {
-                    keysearch = keysearch + i
+            
+            let b = 0;
+            let e = value.length - 1;
+            for (b=0; b < value.length; b++) {
+                if (value[b] != ' ') {
+                    break
                 }
             }
+            for (e = value.length-1; e>=0; e--) {
+                if (value[e] != ' ') {
+                    break
+                }
+            }
+
+            if (e >= 0 && b < value.length) {
+                for (let i = b; i <= e; i++) {
+                    keysearch = keysearch + value[i]
+                }
+            }
+
             if (keysearch != '') {
                 document.getElementById("txtKeyword").value = keysearch
                 document.forms["form-search"].submit(); 
