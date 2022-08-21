@@ -23,7 +23,7 @@
                 <div class="breadcrumb__text">
                     <h2>Nhà sách Phương Nam</h2>
                     <div class="breadcrumb__option">
-                        <a href="">Home</a>
+                        <a href="@Url.Action("Index","Home")">Home</a>
                         <a href="@Url.Action("Index", "ListProductByCategory", new { cateid= ViewBag.ProductCategory.ID })">@ViewBag.ProductCategory.Name</a>
                         <span>@Model.Name</span>
                     </div>

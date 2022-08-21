@@ -156,11 +156,9 @@
             <div class="product__item__pic set-bg" style="background-image: url('@Url.Content("~/Images/{Image}")'); background-size: 194.4px 200px">
                 <ul class="product__item__pic__hover">
                     <li><a href="@Url.Action("AddItem", "Orders", new { productID =-1,quantity = 1}).Replace("-1","{ID}")"><i class="fa fa-shopping-cart"></i></a></li>
-                    @*<li><a href="/them-gio-hang?productID={ID}&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>*@
                 </ul>
             </div>
             <div class="product__item__text">
-                @*<h6><a href="/chi-tiet/{Metatitle}-{ID}">{Name}</a></h6>*@
                 <h6><a href="@Url.Action("DetailProduct", "ManageProduct", new { cateid= -1 }).Replace("-1","{ID}")">{Name}</a></h6>
                 <h5>{Price}<span>đ</span></h5>
             </div>
@@ -176,7 +174,7 @@
                 <div class="breadcrumb__text">
                     <h2>Nhà sách Phương Nam</h2>
                     <div class="breadcrumb__option">
-                        <a href="/">Home</a>
+                        <a href="@Url.Action("Index","Home")">Home</a>
                         <span>@ViewBag.nameProductCategory</span>
                     </div>
                 </div>

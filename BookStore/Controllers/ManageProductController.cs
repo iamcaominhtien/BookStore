@@ -39,6 +39,7 @@ namespace BookStore.Controllers
 
         [Route("tim-kiem-sach")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Search(string keyword="")
         {
             return RedirectToAction("SearchResult", "ManageProduct", new { keyword = keyword });
