@@ -30,11 +30,12 @@ namespace BookStore.Controllers
 
         [Route("")]
         [Route("trang-chu")]
-        public ActionResult Index()
+        public ActionResult Index(int? updateSuccess=0)
         {
             var usersession = (UserLogin)Session[CommonConstant.USER_SESSION];
             var user = db.Users.Find(usersession.UserID);
             ViewBag.Name = user.Name;
+            ViewBag.updateSuccess=updateSuccess;
             OldPass = user.Password;
             return View(db.Users.Find(usersession.UserID));
         }
@@ -44,6 +45,7 @@ namespace BookStore.Controllers
         [Route("trang-chu")]
         public ActionResult Index([Bind(Include = "ID,UserName,Password,Name,Address,Email,Phone,CreatedDate,Status")] User user)
         {
+            ViewBag.updateSuccess = -1;
             ViewBag.Name = user.Name;
             if (ModelState.IsValid)
             {
@@ -52,7 +54,8 @@ namespace BookStore.Controllers
                 else user.Password = Encryptor.MD5Hash(user.Password);
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                return View();
+                ViewBag.updateSuccess = 1;
+                return View(user);
             }
             return View(user);
         }

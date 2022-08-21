@@ -12,6 +12,26 @@
     <script>
         $("#Home_menu").addClass("active");
     </script>
+    <style>
+        @@media only screen and (max-device-width: 480px) {
+             /*in mobile css commands*/ 
+            .categories__item {
+                height: 417px;
+            }
+        }
+        @@media only screen and (min-device-width: 481px) {
+             /*in mobile css commands*/ 
+            .categories__item {
+                height: 210px;
+            }
+        }
+        @@media only screen and (min-device-width: 1200px) {
+            /*in mobile css commands*/
+            .categories__item {
+                height: 255px;
+            }
+        }
+    </style>
 </head>
 
 @section slide {

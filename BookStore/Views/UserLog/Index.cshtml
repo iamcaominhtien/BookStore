@@ -5,6 +5,44 @@
     Layout = "~/Views/Shared/_LayoutClient.cshtml";
 }
 
+<style>
+    #update_status {
+        opacity: 1;
+        height:auto;
+        animation: fadeIn 8s;
+        animation: opacityOn 8s normal forwards;
+        /*animation-delay: 2s;*/
+    }
+
+    @@keyframes opacityOn {
+        0% {
+            opacity: 1;
+            height: 42px;
+        }
+
+        25% {
+            height: 42px;
+        }
+
+        50% {
+            height: 42px;
+        }
+
+        75% {
+            height: 42px;
+        }
+
+        85% {
+            height: 42px;
+        }
+
+        100% {
+            opacity: 0;
+            height:0;
+        }
+    }
+</style>
+
 <section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/Assets/Client/img/breadcrumb.jpg")">
     <div class="container">
         <div class="row">
@@ -51,17 +89,26 @@
                     @Html.HiddenFor(model => model.Status)
 
                 <div class="row d-flex justify-content-around p-3 pt-4" style="background-color: #ebf9eb;border-radius:20px">
+                    @if (ViewBag.updateSuccess == -1)
+                    {
+                        <p id="update_status" class="bg-danger text-white fw-bold py-2 px-4 col-12" style="border-radius:10px"><b>Có lỗi xảy ra. Vui lòng thử lại sau</b></p>
+                    }
+                    else if (ViewBag.updateSuccess == 1)
+                    {
+                        <p id="update_status" class="bg-success text-white fw-bold py-2 px-4 col-12" style="border-radius:10px"><b>Cập nhật thành công</b></p>
+                    }
+
                     <div class="form-group col-lg-5">
                         @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" , required = "required" } })
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                         </div>
                     </div>
 
                     <div class="form-group col-lg-5">
                         @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control",@Value="",placeholder="Đổi mật khẩu", @type = "password" } })
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @Value = "", placeholder = "Đổi mật khẩu", @type = "password" } })
                         </div>
                     </div>
 

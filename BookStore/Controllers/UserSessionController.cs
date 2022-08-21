@@ -164,7 +164,7 @@ namespace BookStore.Controllers
             Session[Common.CommonConstant.CartSession] = null;
             Session.Timeout = 25;
             OrdersController.StatusInitial = false;
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

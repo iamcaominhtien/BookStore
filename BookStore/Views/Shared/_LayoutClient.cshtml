@@ -3,6 +3,8 @@
 @{
     BookStoreEntities db = new BookStoreEntities();
     var Contact = db.Contacts.Find(1);
+    var sumPriceGlobal = 0;
+    var session = (UserLogin)Session[BookStore.Common.CommonConstant.USER_SESSION];
 }
 
 <!DOCTYPE html>
@@ -43,6 +45,22 @@
     @*<div id="preloder">
             <div class="loader"></div>
         </div>*@
+    <script>
+        function submit_form_search(event) {
+            event.preventDefault()
+            value = document.getElementById("txtKeyword").value
+            keysearch = ''
+            for (let i of value) {
+                if (i != ' ') {
+                    keysearch = keysearch + i
+                }
+            }
+            if (keysearch != '') {
+                document.getElementById("txtKeyword").value = keysearch
+                document.forms["form-search"].submit(); 
+            }
+        }
+    </script>
 
     <!-- Humberger Begin -->
     <div class="humberger__menu__overlay"></div>
@@ -55,10 +73,10 @@
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                 <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+            <div class="header__cart__price">item: <span>@sumPriceGlobal.ToString("N0")</span></div>
         </div>
         <div class="humberger__menu__widget">
-            <div class="header__top__right__language">
+            @*<div class="header__top__right__language">
                 <img src="@Url.Content("~/Assets/Client/img/language.png")" alt="">
                 <div>English</div>
                 <span class="arrow_carrot-down"></span>
@@ -66,21 +84,32 @@
                     <li><a href="#">Spanis</a></li>
                     <li><a href="#">English</a></li>
                 </ul>
-            </div>
-            <div class="header__top__right__auth">
-                <a href="@Url.Action("Register","UserSession")"><i class="fa fa-user"></i>Đăng nhập</a>
+            </div>*@
+            <div class="header__top__right__language">
+                <span class="arrow_carrot-down"></span>
+                @if (session == null)
+                {
+                    <a href="@Url.Action("Login","UserSession")"><i class="fa fa-user"></i> Login</a>
+                }
+                else
+                {
+                    var name = db.Users.SingleOrDefault(s => s.UserName == session.UserName);
+                    <div><b style="font-size:16px">@name.Name</b></div>
+                    <ul id="my_accout">
+                        <li><a href="@Url.Action("Index","UserLog")">Tài khoản của tôi</a></li>
+                        <li>@Html.ActionLink("Logout", "Logout", "UserSession")</li>
+                    </ul>
+                }
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="@Url.Action("Index","Home")">Home</a></li>
-                <li><a href="./shop-grid.html">Shop</a></li>
                 <li>
                     <a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                        <li><a href="./checkout.html">Check Out</a></li>
+                        <li><a href="@Url.Action("Index","Orders")">Shoping Cart</a></li>
+                        <li><a href="@Url.Action("CheckOut","Orders")">Check Out</a></li>
                     </ul>
                 </li>
                 <li><a href="@Url.Action("Contact","Home")">Contact</a></li>
@@ -122,8 +151,6 @@
                                 <a href="https://www.linkedin.com/company/cong-ty-co-phan-van-hoa-phuong-nam/"><i class="fa fa-linkedin"></i></a>
                             </div>
                             <div class="header__top__right__language header__top__right__auth">
-                                @{ var session = (UserLogin)Session[BookStore.Common.CommonConstant.USER_SESSION]; }
-
                                 @if (session == null)
                                 {
                                     <a href="@Url.Action("Login","UserSession")"><i class="fa fa-user"></i> Login</a>
@@ -189,6 +216,7 @@
                                             {
                                                 sumPrice += (int)(item.Product.Price.GetValueOrDefault(0) * item.Quantity);
                                             }
+                                            sumPriceGlobal = sumPrice;
                                         }
                                     }
                                 </a>
@@ -214,9 +242,9 @@
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                            <form action="@Url.Action("Search","ManageProduct")" method="POST">
+                            <form action="@Url.Action("Search","ManageProduct")" method="POST" id="form-search">
                                 <input type="text" placeholder="Bạn đang tìm gì?" id="txtKeyword" name="keyword">
-                                <button type="submit" id="search_btn" class="site-btn" @*onclick="submit_form_search(event)"*@>SEARCH</button>
+                                <button type="submit" id="search_btn" class="site-btn" onclick="submit_form_search(event)">SEARCH</button>
                             </form>
                         </div>
                         <div class="hero__search__phone">

@@ -39,7 +39,7 @@ namespace BookStore.Controllers
 
         [Route("tim-kiem-sach")]
         [HttpPost]
-        public ActionResult Search(string keyword)
+        public ActionResult Search(string keyword="")
         {
             return RedirectToAction("SearchResult", "ManageProduct", new { keyword = keyword });
         }
